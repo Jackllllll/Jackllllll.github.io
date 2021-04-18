@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en" data-dw="750">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <meta name="format-detection" content="telephone=no, email=no"/>
+  <meta name="renderer" content="webkit">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="MobileOptimized" content="320">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="x5-orientation" content="portrait">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="renderer" content="webkit">
+  <meta name="keywords" content="康美药业">
+  <meta name="description" content="康美药业">
+  <meta name="apple-mobile-web-app-title" content="康美药业">
+  <script type="text/javascript" src="js/rem.js"></script>
+  <script src="http://sdk.talkingdata.com/app/h5/v1?appid=03D794CE66A64E01AD85EBC2DF56402A&vn=v1.0&vc=v1.0"></script>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/index.css">
+  <title>你是哪种加班狗？</title>
+  <script type="text/javascript" src="jssdk/wx.js"></script>
+  <script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
+
+<script>
+var wechat={};
+wechat.channel="web";
+TDAPP.onEvent('进入页面');
+window.end = 0;
+window.sharetitle = "快来测测你是哪种加班狗！";
+window.sharedesc = "加了那么多班！竟还不知道你是哪种加班狗？";
+window.username = '';
+/* alert('<?php echo $nickname; ?>'); */
+
+var userDatas={};
+var keepSession = function(){
+  var url = window.location.href.split("#")[0];
+	$.ajax({
+		async : false,
+		// url: "/keeplive?data="+Date.parse(new Date()),
+    url:"http://test.palm-h.com/main/2017/mkye2/jssdk/jssdk.php", 
+		method : "GET",
+		headers:wechat,	
+		dataType : "json",
+    data:{ "url": url },
+		success : function(data) {	
+      console.log(data);
+			userDatas.code=data.code;
+			userDatas.data=data.data;
+			var signature= data.data.signature;
+			if(data.data.user){
+				window.username = data.data.user.userName;
+			}
+			console.log(signature);
+			if(signature && signature.signature && signature.nonceStr && signature.timestamp) {
+		        wx.config({
+		            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。  
+		            appId: signature.appId,  // 必填，公众号的唯一标识  
+		            timestamp: signature.timestamp, // 必填，生成签名的时间戳  
+		            nonceStr:  signature.nonceStr, // 必填，生成签名的随机串  
+		            signature: signature.signature,// 必填，签名，见附录1  
+		            jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','scanQRCode','chooseImage','previewImage','uploadImage','getLocation','chooseWXPay']// 必填，需要使用的JS接口列表，所有JS接口列表见附录2  
+		        });
+		        
+		        
+			}   		
+		},
+		error : function() {
+			
+		}
+	})
+};
+keepSession();
+
+// tokenjs();
+// function tokenjs(){
+	
+// 	if(userDatas.code=="9"){
+// 		window.location.href="http://"+window.location.host+"/user/login?r="+window.location.href;
+// 		return;  
+// 	}else if(userDatas.code=="0" && userDatas.data){
+// 		return;   
+// 	}else{
+// 		window.location.href="http://"+window.location.host+"/user/login?r="+window.location.href;
+// 		return;  
+// 	}
+// }
+
+		
+
+
+</script>
+</head>
+<body>
+<header></header>
+
+<div class="logo"></div>
+
+<div class="music-button on"></div>
+<audio class="hide" id="audio" src="audio/bgm.mp3" loop></audio>
+
+<div class="part loading hide">
+  <img class="loading-gif" src="images/loading.gif">
+  <div class="loading-bg">
+    <div class="progress-wrap">
+      <div class="progress"></div>
+    </div>
+  </div>
+  <div class="loading-text"></div>
+</div>
+
+<div class="part part01 hide">
+  <div class="title"></div>
+  <div class="head"></div>
+  <div class="button"></div>
+</div>
+
+<div class="part part02 hide">
+  <div class="wenti wenti01 swiper-container ">
+    <div class="wenti-wrap swiper-wrapper">
+      <div class="wenti-wenti swiper-slide">
+        <img class="bg" src="images/wenti01.gif">
+        <div class="wenti-text-wrap">
+          <div class="wenti-text">
+            <!--<p>1、坐了一上午，肚腩又多了个圈，是</p>-->
+            <!--<p>时候…?</p>-->
+          </div>
+        </div>
+        <div class="arrow"></div>
+      </div>
+
+      <div class="wenti-huida swiper-slide">
+          <div class="select select01" data-fen="6">
+            <img class="pic jpg" src="images/wenti01_pic01.jpg">
+            <img class="pic gif" src="images/wenti01_pic01.gif">
+            <div class="text">下楼去溜达溜达</div>
+          </div>
+          <div class="select select02" data-fen="4">
+            <img class="pic jpg" src="images/wenti01_pic02.jpg">
+            <img class="pic gif" src="images/wenti01_pic02.gif">
+            <div class="text">动起来！
+              <br>“脖子扭扭，屁股扭扭…”</div>
+          </div>
+          <div class="select select03" data-fen="1">
+            <img class="pic jpg" src="images/wenti01_pic03.jpg">
+            <img class="pic gif" src="images/wenti01_pic03.gif">
+            <div class="text">反正胖了，
+              <br>就坐到天荒地老吧!</div>
+          </div>
+          <div class="select select04" data-fen="3">
+            <img class="pic jpg" src="images/wenti01_pic04.jpg">
+            <img class="pic gif" src="images/wenti01_pic04.gif">
+            <div class="text">吓得我赶紧
+              <br>吃包薯片冷静一下</div>
+          </div>
+          <div class="sure-button sure-button01"></div>
+        </div>
+    </div>
+  </div>
+
+  <div class="wenti wenti02 swiper-container hide">
+    <div class="wenti-wrap swiper-wrapper">
+      <div class="wenti-wenti swiper-slide">
+        <img class="bg" src="images/wenti02.gif">
+        <div class="wenti-text-wrap">
+          <div class="wenti-text">
+            <!--<p>2、听说周五要交方案，今天已经周四！！</p>-->
+            <!--<p>还没开始做怎么办？？！！！</p>-->
+          </div>
+        </div>
+        <div class="arrow"></div>
+
+      </div>
+
+      <div class="wenti-huida swiper-slide">
+          <div class="select select01" data-fen="6">
+            <img class="pic jpg" src="images/wenti02_pic01.jpg">
+            <img class="pic gif" src="images/wenti02_pic01.gif">
+            <div class="text">先泡杯鲜参茶，提提神</div>
+          </div>
+          <div class="select select02" data-fen="1">
+            <img class="pic jpg" src="images/wenti02_pic02.jpg">
+            <img class="pic gif" src="images/wenti02_pic02.gif">
+            <div class="text">你见过凌晨四点钟的
+              <br>三里屯吗</div>
+          </div>
+          <div class="select select03" data-fen="4">
+            <img class="pic jpg" src="images/wenti02_pic03.jpg">
+            <img class="pic gif" src="images/wenti02_pic03.gif">
+            <div class="text">睡醒再说</div>
+          </div>
+          <div class="select select04" data-fen="3">
+            <img class="pic jpg" src="images/wenti02_pic04.jpg">
+            <img class="pic gif" src="images/wenti02_pic04.gif">
+            <div class="text">出现吧，我的超能力</div>
+          </div>
+          <div class="sure-button sure-button02"></div>
+        </div>
+    </div>
+  </div>
+
+  <div class="wenti wenti03 swiper-container hide">
+    <div class="wenti-wrap swiper-wrapper">
+      <div class="wenti-wenti swiper-slide">
+        <img class="bg bg2" src="images/wenti03.gif">
+        <div class="wenti-text-wrap">
+          <div class="wenti-text">
+            <!--3、加班加到肚子饿，你会点什么外卖…?-->
+          </div>
+        </div>
+        <div class="arrow"></div>
+
+      </div>
+
+      <div class="wenti-huida swiper-slide">
+          <div class="select select01" data-fen="1">
+            <img class="pic jpg" src="images/wenti03_pic01.jpg">
+            <img class="pic gif" src="images/wenti03_pic01.gif">
+            <div class="text">红牛咖啡麻辣烫，
+              <br>作死没有极限！</div>
+
+          </div>
+          <div class="select select02" data-fen="4">
+            <img class="pic jpg" src="images/wenti03_pic02.jpg">
+            <img class="pic gif" src="images/wenti03_pic02.gif">
+            <div class="text">啃得鸡豪华夜宵，
+              <br>吃饱让我快乐！</div>
+          </div>
+          <div class="select select03" data-fen="6">
+            <img class="pic jpg" src="images/wenti03_pic03.jpg">
+            <img class="pic gif" src="images/wenti03_pic03.gif">
+            <div class="text">元气归位鲜参汤，
+              <br>加班不伤身！</div>
+
+          </div>
+          <div class="select select04" data-fen="3">
+            <img class="pic jpg" src="images/wenti03_pic04.jpg">
+            <img class="pic gif" src="images/wenti03_pic04.gif">
+            <div class="text">外卖是什么，
+              <br>街边撸串去！</div>
+
+          </div>
+          <div class="sure-button sure-button03"></div>
+        </div>
+    </div>
+  </div>
+
+  <div class="wenti wenti04 swiper-container hide">
+    <div class="wenti-wrap swiper-wrapper">
+      <div class="wenti-wenti swiper-slide">
+        <img class="bg bg2" src="images/wenti04.gif">
+        <div class="wenti-text-wrap">
+          <div class="wenti-text">
+            <!--4、加完班回到家已经很晚，此时你…?-->
+          </div>
+        </div>
+        <div class="arrow"></div>
+
+      </div>
+
+      <div class="wenti-huida swiper-slide">
+          <div class="select select01" data-fen="6">
+            <img class="pic jpg" src="images/wenti04_pic01.jpg">
+            <img class="pic gif" src="images/wenti04_pic01.gif">
+            <div class="text">躺下秒睡</div>
+
+          </div>
+          <div class="select select02" data-fen="4">
+            <img class="pic jpg" src="images/wenti04_pic02.jpg">
+            <img class="pic gif" src="images/wenti04_pic02.gif">
+            <div class="text">深夜放毒，
+              <br>晒个朋友圈</div>
+
+          </div>
+          <div class="select select03" data-fen="1">
+            <img class="pic jpg" src="images/wenti04_pic03.jpg">
+            <img class="pic gif" src="images/wenti04_pic03.gif">
+            <div class="text">组团开黑，彻夜爆肝</div>
+
+          </div>
+          <div class="select select04" data-fen="3">
+            <img class="pic jpg" src="images/wenti04_pic04.jpg">
+            <img class="pic gif" src="images/wenti04_pic04.gif">
+            <div class="text">林狗追妻记 更新了！</div>
+
+          </div>
+          <div class="sure-button sure-button04"></div>
+        </div>
+    </div>
+  </div>
+
+  <div class="wenti wenti05 swiper-container hide">
+    <div class="wenti-wrap swiper-wrapper">
+      <div class="wenti-wenti swiper-slide">
+        <img class="bg" src="images/wenti05.gif">
+        <div class="wenti-text-wrap">
+          <div class="wenti-text">
+            <!--<p>5、周末，老板突然call你回去加班，你</p>-->
+            <!--<p>会…？</p>-->
+          </div>
+        </div>
+        <div class="arrow"></div>
+
+      </div>
+      <div class="wenti-huida swiper-slide">
+          <div class="select select01" data-fen="1">
+            <img class="pic jpg" src="images/wenti05_pic01.jpg">
+            <img class="pic gif" src="images/wenti05_pic01.gif">
+            <div class="text">默默滚回去加班</div>
+
+          </div>
+          <div class="select select02" data-fen="4">
+            <img class="pic jpg" src="images/wenti05_pic02.jpg">
+            <img class="pic gif" src="images/wenti05_pic02.gif">
+            <div class="text">外包给基友，
+              <br>潇洒过周末。</div>
+
+          </div>
+          <div class="select select03" data-fen="3">
+            <img class="pic jpg" src="images/wenti05_pic03.jpg">
+            <img class="pic gif" src="images/wenti05_pic03.gif">
+            <div class="text">“歪？老板你说啥？信号
+              <br>不好，歪？歪？歪…” </div>
+
+          </div>
+          <div class="select select04" data-fen="6">
+            <img class="pic jpg" src="images/wenti05_pic04.jpg">
+            <img class="pic gif" src="images/wenti05_pic04.gif">
+            <div class="text">加班可以，
+              <br>请喂我一根人参</div>
+
+          </div>
+          <div class="sure-button sure-button05"></div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="part part03 hide">
+    <img class="bg" src="images/ending_bg.jpg">
+    <div class="end end01 hide">
+      <div class="title">
+        <div class="title-text">121212</div>
+      </div>
+      <div class="text">吃条鲜参补一补，扶朕起来继续撸！</div>
+      <div class="pic-wrap">
+        <img src="images/jie01_pic.gif">
+        <span class="danmu">老板向你发出加班请求并荣耀你的悲伤</span>
+        <span class="danmu">方案没写完我不会轻易狗带</span>
+        <span class="danmu">下班是什么，能吃吗？</span>
+        <span class="danmu">生命不息加班不止</span>
+        <span class="danmu">战斗到最后一秒！</span>
+        <span class="danmu">我的世界没有下班这两个字！</span>
+        <span class="danmu">稳住，我们能赢。。。</span>
+        <span class="danmu">老板向你发出加班请求并荣耀你的悲伤</span>
+        <span class="danmu">方案没写完我不会轻易狗带</span>
+        <span class="danmu">下班是什么，能吃吗？</span>
+        <span class="danmu">生命不息加班不止</span>
+        <span class="danmu">战斗到最后一秒！</span>
+        <span class="danmu">我加班我骄傲，我加班我自豪~</span>
+        <span class="danmu">我的世界没有下班这两个字！</span>
+        <span class="danmu">稳住，我们能赢。。。</span>
+        <span class="danmu">老板向你发出加班请求并荣耀你的悲伤</span>
+        <span class="danmu">方案没写完我不会轻易狗带</span>
+        <span class="danmu">下班是什么，能吃吗？</span>
+        <span class="danmu">生命不息加班不止</span>
+        <span class="danmu">战斗到最后一秒！</span>
+        <span class="danmu">我加班我骄傲，我加班我自豪~</span>
+        <span class="danmu">我的世界没有下班这两个字！</span>
+        <span class="danmu">稳住，我们能赢。。。</span>
+        <span class="danmu">老板向你发出加班请求并荣耀你的悲伤</span>
+        <span class="danmu">方案没写完我不会轻易狗带</span>
+        <span class="danmu">下班是什么，能吃吗？</span>
+        <span class="danmu">生命不息加班不止</span>
+        <span class="danmu">战斗到最后一秒！</span>
+        <span class="danmu">我加班我骄傲，我加班我自豪~</span>
+        <span class="danmu">我的世界没有下班这两个字！</span>
+        <span class="danmu">稳住，我们能赢。。。</span>
+        <span class="danmu">老板向你发出加班请求并荣耀你的悲伤</span>
+      </div>
+    </div>
+    <div class="end end02 hide">
+      <div class="title">
+        <div class="title-text">12121</div>
+      </div>
+      <div class="text">吃条鲜人参，瞬间满血复活！</div>
+      <div class="pic-wrap">
+        <img src="images/jie02_pic.gif">
+        <span class="danmu">我才是嗨到最晚的男人</span>
+        <span class="danmu">浪起来连自己都害怕</span>
+        <span class="danmu">每天叫醒我的不是梦想，是工作!</span>
+        <span class="danmu">请开始你的婊演</span>
+        <span class="danmu">请问你有freestyle吗？</span> 
+        <span class="danmu">旋转跳跃我闭着眼</span>
+        <span class="danmu">睡麻痹起来嗨</span>
+        <span class="danmu">夜空中最亮的星~</span>
+
+        <span class="danmu">每天叫醒我的不是梦想，是工作！</span>
+        <span class="danmu">我才是嗨到最晚的男人</span>
+        <span class="danmu">浪起来连自己都害怕</span>
+        <span class="danmu">每天叫醒我的不是梦想，是工作!</span>
+        <span class="danmu">请开始你的婊演</span>
+        <span class="danmu">请问你有freestyle吗？</span> 
+        <span class="danmu">旋转跳跃我闭着眼</span>
+        <span class="danmu">睡麻痹起来嗨</span>
+        <span class="danmu">夜空中最亮的星~</span>
+
+        <span class="danmu">每天叫醒我的不是梦想，是工作！</span>
+        <span class="danmu">我才是嗨到最晚的男人</span>
+        <span class="danmu">浪起来连自己都害怕</span>
+        <span class="danmu">每天叫醒我的不是梦想，是工作!</span>
+        <span class="danmu">请开始你的婊演</span>
+        <span class="danmu">请问你有freestyle吗？</span> 
+        <span class="danmu">旋转跳跃我闭着眼</span>
+        <span class="danmu">睡麻痹起来嗨</span>
+        <span class="danmu">夜空中最亮的星~</span>
+        
+        <span class="danmu">每天叫醒我的不是梦想，是工作！</span>
+        <span class="danmu">我才是嗨到最晚的男人</span>
+        <span class="danmu">浪起来连自己都害怕</span>
+        <span class="danmu">每天叫醒我的不是梦想，是工作!</span>
+        <span class="danmu">请开始你的婊演</span>
+        <span class="danmu">请问你有freestyle吗？</span>        
+        <span class="danmu">旋转跳跃我闭着眼</span>
+        <span class="danmu">睡麻痹起来嗨</span>
+        <span class="danmu">夜空中最亮的星~</span>
+        <span class="danmu">每天叫醒我的不是梦想，是工作！</span>
+      </div>
+    </div>
+
+    <!-- new part03 -->
+    <div class="end end03 hide">
+      <div class="title">
+        <div class="title-text">12121</div>
+      </div>
+      <div class="text">吃条鲜人参，从此不茫然！</div>
+      <div class="pic-wrap">
+        <img src="images/jie03_pic.gif">
+        <span class="danmu">我是谁？我在哪？</span>
+        <span class="danmu">我在干什么</span>
+        <span class="danmu">接下来去哪里</span>
+        <span class="danmu">人生的意义在哪里</span>
+        <span class="danmu">宇宙的边界在哪里</span>
+        <span class="danmu">什么，今天不是周五吗</span>
+        <span class="danmu">加班是什么？能吃吗？</span>
+        <span class="danmu">其实我已经被开除了吧？</span>
+
+        <span class="danmu">我是谁？我在哪？</span>
+        <span class="danmu">我在干什么</span>
+        <span class="danmu">接下来去哪里</span>
+        <span class="danmu">人生的意义在哪里</span>
+        <span class="danmu">宇宙的边界在哪里</span>
+        <span class="danmu">什么，今天不是周五吗</span>
+        <span class="danmu">加班是什么？能吃吗？</span>
+        <span class="danmu">其实我已经被开除了吧？</span>
+
+        <span class="danmu">我是谁？我在哪？</span>
+        <span class="danmu">我在干什么</span>
+        <span class="danmu">接下来去哪里</span>
+        <span class="danmu">人生的意义在哪里</span>
+        <span class="danmu">宇宙的边界在哪里</span>
+        <span class="danmu">什么，今天不是周五吗</span>
+        <span class="danmu">加班是什么？能吃吗？</span>
+        <span class="danmu">其实我已经被开除了吧？</span>
+
+        <span class="danmu">我是谁？我在哪？</span>
+        <span class="danmu">我在干什么</span>
+        <span class="danmu">接下来去哪里</span>
+        <span class="danmu">人生的意义在哪里</span>
+        <span class="danmu">宇宙的边界在哪里</span>
+        <span class="danmu">什么，今天不是周五吗</span>
+        <span class="danmu">加班是什么？能吃吗？</span>
+        <span class="danmu">其实我已经被开除了吧？</span>
+      </div>
+    </div>
+
+
+    <div class="end end04 hide">
+      <div class="title">
+        <div class="title-text">12121</div>
+      </div>
+      <div class="text">吃条鲜人参，没事补补身~</div>
+      <div class="pic-wrap">
+        <img src="images/jie04_pic.gif">
+        <span class="danmu">有种加班叫老板还在办公室~</span>
+        <span class="danmu">加班是为了让老板过得更好！</span>
+        <span class="danmu">抱住躲避晚高峰棒棒的寄几</span>
+        <span class="danmu">没事加加班，反正闲着也是闲着</span>
+        <span class="danmu">好的领导！我还能继续加班！</span>
+        <span class="danmu">何以解忧？唯有加班！</span>
+        <span class="danmu">我的心里只有一件事，就是工作！</span>
+        <span class="danmu">有种加班叫老板还在办公室~</span>
+        <span class="danmu">加班是为了让老板过得更好！</span>
+        <span class="danmu">抱住躲避晚高峰棒棒的寄几</span>
+        <span class="danmu">没事加加班，反正闲着也是闲着</span>
+        <span class="danmu">好的领导！我还能继续加班！</span>
+        <span class="danmu">何以解忧？唯有加班！</span>
+        <span class="danmu">我的心里只有一件事，就是工作！</span>
+        <span class="danmu">有种加班叫老板还在办公室~</span>
+        <span class="danmu">加班是为了让老板过得更好！</span>
+        <span class="danmu">抱住躲避晚高峰棒棒的寄几</span>
+        <span class="danmu">没事加加班，反正闲着也是闲着</span>
+        <span class="danmu">好的领导！我还能继续加班！</span>
+        <span class="danmu">何以解忧？唯有加班！</span>
+        <span class="danmu">我的心里只有一件事，就是工作！</span>
+        <span class="danmu">有种加班叫老板还在办公室~</span>
+        <span class="danmu">加班是为了让老板过得更好！</span>
+        <span class="danmu">抱住躲避晚高峰棒棒的寄几</span>
+        <span class="danmu">没事加加班，反正闲着也是闲着</span>
+        <span class="danmu">好的领导！我还能继续加班！</span>
+        <span class="danmu">何以解忧？唯有加班！</span>
+        <span class="danmu">我的心里只有一件事，就是工作！</span>
+      </div>
+    </div>
+    <!-- new part05 -->
+    <div class="end end05 hide">
+      <div class="title">
+        <div class="title-text">12121</div>
+      </div>
+      <div class="text">吃条鲜人参，碧树在心中！</div>
+      <div class="pic-wrap">
+        <img src="images/jie05_pic.gif">
+        <span class="danmu">我加不加班，你自己心里没点……</span>
+        <span class="danmu">我从来不熬夜，一般都是通宵</span>
+        <span class="danmu">掐指一算，今日不宜加班</span>
+        <span class="danmu">攒下来的假够给自己生个孩子了</span>
+        <span class="danmu">就加两个小时，真的不能再多了</span>
+        <span class="danmu">加班由我不由天</span>
+        <span class="danmu">下班时间都掌握不了，还怎么掌握人生</span>
+        <span class="danmu">今日事昨日毕</span>
+        <span class="danmu">我加不加班，你自己心里没点……</span>
+        <span class="danmu">我从来不熬夜，一般都是通宵</span>
+        <span class="danmu">掐指一算，今日不宜加班</span>
+        <span class="danmu">攒下来的假够给自己生个孩子了</span>
+        <span class="danmu">就加两个小时，真的不能再多了</span>
+        <span class="danmu">加班由我不由天</span>
+        <span class="danmu">下班时间都掌握不了，还怎么掌握人生</span>
+        <span class="danmu">今日事昨日毕</span>
+        <span class="danmu">我加不加班，你自己心里没点……</span>
+        <span class="danmu">我从来不熬夜，一般都是通宵</span>
+        <span class="danmu">掐指一算，今日不宜加班</span>
+        <span class="danmu">攒下来的假够给自己生个孩子了</span>
+        <span class="danmu">就加两个小时，真的不能再多了</span>
+        <span class="danmu">加班由我不由天</span>
+        <span class="danmu">下班时间都掌握不了，还怎么掌握人生。</span>
+        <span class="danmu">今日事昨日毕</span>
+        <span class="danmu">我加不加班，你自己心里没点……</span>
+        <span class="danmu">我从来不熬夜，一般都是通宵</span>
+        <span class="danmu">掐指一算，今日不宜加班</span>
+        <span class="danmu">攒下来的假够给自己生个孩子了</span>
+        <span class="danmu">就加两个小时，真的不能再多了</span>
+        <span class="danmu">加班由我不由天</span>
+        <span class="danmu">下班时间都掌握不了，还怎么掌握人生</span>
+        <span class="danmu">今日事昨日毕</span>
+      </div>
+    </div>
+
+    <div class="end end06 hide">
+      <div class="title">
+        <div class="title-text">12121</div>
+      </div>
+      <div class="text">吃条鲜人参，健康又养生~</div>
+      <div class="pic-wrap">
+        <img src="images/jie06_pic.gif">
+        <span class="danmu">懒癌不能碰，自救要趁早！</span>
+        <span class="danmu">工作效率高，下班下的早！</span>
+        <span class="danmu">好好工作，天天向上！</span>
+        <span class="danmu">加班伤身，吃颗人参</span>
+        <span class="danmu">加班是什么，能吃吗？</span>
+        <span class="danmu">朝九晚五，远离过劳肥</span>
+        <span class="danmu">人家就是不想加班嘛</span>
+        <span class="danmu">丑的人还在加班，帅的人早已离去~</span>
+        <span class="danmu">懒癌不能碰，自救要趁早！</span>
+        <span class="danmu">工作效率高，下班下的早！</span>
+        <span class="danmu">好好工作，天天向上！</span>
+        <span class="danmu">加班伤身，吃颗人参</span>
+        <span class="danmu">加班是什么，能吃吗？</span>
+        <span class="danmu">朝九晚五，远离过劳肥</span>
+        <span class="danmu">人家就是不想加班嘛</span>
+        <span class="danmu">丑的人还在加班，帅的人早已离去~</span>
+        <span class="danmu">懒癌不能碰，自救要趁早！</span>
+        <span class="danmu">工作效率高，下班下的早！</span>
+        <span class="danmu">好好工作，天天向上！</span>
+        <span class="danmu">加班伤身，吃颗人参</span>
+        <span class="danmu">加班是什么，能吃吗？</span>
+        <span class="danmu">朝九晚五，远离过劳肥</span>
+        <span class="danmu">人家就是不想加班嘛。</span>
+        <span class="danmu">丑的人还在加班，帅的人早已离去~</span>
+        <span class="danmu">懒癌不能碰，自救要趁早！</span>
+        <span class="danmu">工作效率高，下班下的早！</span>
+        <span class="danmu">好好工作，天天向上！</span>
+        <span class="danmu">加班伤身，吃颗人参</span>
+        <span class="danmu">加班是什么，能吃吗？</span>
+        <span class="danmu">朝九晚五，远离过劳肥</span>
+        <span class="danmu">人家就是不想加班嘛</span>
+        <span class="danmu">丑的人还在加班，帅的人早已离去~</span>
+      </div>
+    </div>
+    <div class="button link"></div>
+    <div class="button share"></div>
+    <div class="button again"></div>
+
+</div>
+
+<div class="part part04 hide">
+  <img class="bg" src="images/ending_bg.jpg">
+  
+  <div class="end end01 hide">
+      <div class="title">
+        <div class="title-text title-text2">121212</div>
+      </div>
+      <div class="text">吃条鲜参补一补，扶朕起来继续撸！</div>
+      <div class="pic-wrap">
+        <img src="images/jie01_pic.gif">
+        <span class="danmu">老板向你发出加班请求并荣耀你的悲伤</span>
+        <span class="danmu">方案没写完我不会轻易狗带</span>
+        <span class="danmu">下班是什么，能吃吗？</span>
+        <span class="danmu">生命不息加班不止</span>
+        <span class="danmu">战斗到最后一秒！</span>
+        <span class="danmu">我的世界没有下班这两个字！</span>
+        <span class="danmu">稳住，我们能赢。。。</span>
+        <span class="danmu">老板向你发出加班请求并荣耀你的悲伤</span>
+        <span class="danmu">方案没写完我不会轻易狗带</span>
+        <span class="danmu">下班是什么，能吃吗？</span>
+        <span class="danmu">生命不息加班不止</span>
+        <span class="danmu">战斗到最后一秒！</span>
+        <span class="danmu">我加班我骄傲，我加班我自豪~</span>
+        <span class="danmu">我的世界没有下班这两个字！</span>
+        <span class="danmu">稳住，我们能赢。。。</span>
+        <span class="danmu">老板向你发出加班请求并荣耀你的悲伤</span>
+        <span class="danmu">方案没写完我不会轻易狗带</span>
+        <span class="danmu">下班是什么，能吃吗？</span>
+        <span class="danmu">生命不息加班不止</span>
+        <span class="danmu">战斗到最后一秒！</span>
+        <span class="danmu">我加班我骄傲，我加班我自豪~</span>
+        <span class="danmu">我的世界没有下班这两个字！</span>
+        <span class="danmu">稳住，我们能赢。。。</span>
+        <span class="danmu">老板向你发出加班请求并荣耀你的悲伤</span>
+        <span class="danmu">方案没写完我不会轻易狗带</span>
+        <span class="danmu">下班是什么，能吃吗？</span>
+        <span class="danmu">生命不息加班不止</span>
+        <span class="danmu">战斗到最后一秒！</span>
+        <span class="danmu">我加班我骄傲，我加班我自豪~</span>
+        <span class="danmu">我的世界没有下班这两个字！</span>
+        <span class="danmu">稳住，我们能赢。。。</span>
+        <span class="danmu">老板向你发出加班请求并荣耀你的悲伤</span>
+      </div>
+  </div>
+    
+    
+    <div class="end end02 hide">
+      <div class="title">
+        <div class="title-text title-text2">12121</div>
+      </div>
+      <div class="text">吃条鲜人参，瞬间满血复活！</div>
+      <div class="pic-wrap">
+        <img src="images/jie02_pic.gif">
+        <span class="danmu">我才是嗨到最晚的男人</span>
+        <span class="danmu">浪起来连自己都害怕</span>
+        <span class="danmu">每天叫醒我的不是梦想，是工作!</span>
+        <span class="danmu">请开始你的婊演</span>
+        <span class="danmu">请问你有freestyle吗？</span> 
+        <span class="danmu">旋转跳跃我闭着眼</span>
+        <span class="danmu">睡麻痹起来嗨</span>
+        <span class="danmu">夜空中最亮的星~</span>
+
+        <span class="danmu">每天叫醒我的不是梦想，是工作！</span>
+        <span class="danmu">我才是嗨到最晚的男人</span>
+        <span class="danmu">浪起来连自己都害怕</span>
+        <span class="danmu">每天叫醒我的不是梦想，是工作!</span>
+        <span class="danmu">请开始你的婊演</span>
+        <span class="danmu">请问你有freestyle吗？</span> 
+        <span class="danmu">旋转跳跃我闭着眼</span>
+        <span class="danmu">睡麻痹起来嗨</span>
+        <span class="danmu">夜空中最亮的星~</span>
+
+        <span class="danmu">每天叫醒我的不是梦想，是工作！</span>
+        <span class="danmu">我才是嗨到最晚的男人</span>
+        <span class="danmu">浪起来连自己都害怕</span>
+        <span class="danmu">每天叫醒我的不是梦想，是工作!</span>
+        <span class="danmu">请开始你的婊演</span>
+        <span class="danmu">请问你有freestyle吗？</span> 
+        <span class="danmu">旋转跳跃我闭着眼</span>
+        <span class="danmu">睡麻痹起来嗨</span>
+        <span class="danmu">夜空中最亮的星~</span>
+        
+        <span class="danmu">每天叫醒我的不是梦想，是工作！</span>
+        <span class="danmu">我才是嗨到最晚的男人</span>
+        <span class="danmu">浪起来连自己都害怕</span>
+        <span class="danmu">每天叫醒我的不是梦想，是工作!</span>
+        <span class="danmu">请开始你的婊演</span>
+        <span class="danmu">请问你有freestyle吗？</span>        
+        <span class="danmu">旋转跳跃我闭着眼</span>
+        <span class="danmu">睡麻痹起来嗨</span>
+        <span class="danmu">夜空中最亮的星~</span>
+        <span class="danmu">每天叫醒我的不是梦想，是工作！</span>
+      </div>
+    </div>
+
+    <!-- new part03 -->
+    <div class="end end03 hide">
+      <div class="title">
+        <div class="title-text title-text2">12121</div>
+      </div>
+      <div class="text">吃条鲜人参，从此不茫然！</div>
+      <div class="pic-wrap">
+        <img src="images/jie03_pic.gif">
+        <span class="danmu">我是谁？我在哪？</span>
+        <span class="danmu">我在干什么</span>
+        <span class="danmu">接下来去哪里</span>
+        <span class="danmu">人生的意义在哪里</span>
+        <span class="danmu">宇宙的边界在哪里</span>
+        <span class="danmu">什么，今天不是周五吗</span>
+        <span class="danmu">加班是什么？能吃吗？</span>
+        <span class="danmu">其实我已经被开除了吧？</span>
+
+        <span class="danmu">我是谁？我在哪？</span>
+        <span class="danmu">我在干什么</span>
+        <span class="danmu">接下来去哪里</span>
+        <span class="danmu">人生的意义在哪里</span>
+        <span class="danmu">宇宙的边界在哪里</span>
+        <span class="danmu">什么，今天不是周五吗</span>
+        <span class="danmu">加班是什么？能吃吗？</span>
+        <span class="danmu">其实我已经被开除了吧？</span>
+
+        <span class="danmu">我是谁？我在哪？</span>
+        <span class="danmu">我在干什么</span>
+        <span class="danmu">接下来去哪里</span>
+        <span class="danmu">人生的意义在哪里</span>
+        <span class="danmu">宇宙的边界在哪里</span>
+        <span class="danmu">什么，今天不是周五吗</span>
+        <span class="danmu">加班是什么？能吃吗？</span>
+        <span class="danmu">其实我已经被开除了吧？</span>
+
+        <span class="danmu">我是谁？我在哪？</span>
+        <span class="danmu">我在干什么</span>
+        <span class="danmu">接下来去哪里</span>
+        <span class="danmu">人生的意义在哪里</span>
+        <span class="danmu">宇宙的边界在哪里</span>
+        <span class="danmu">什么，今天不是周五吗</span>
+        <span class="danmu">加班是什么？能吃吗？</span>
+        <span class="danmu">其实我已经被开除了吧？</span>
+      </div>
+    </div>
+
+
+    <div class="end end04 hide">
+      <div class="title">
+        <div class="title-text title-text2">12121</div>
+      </div>
+      <div class="text">吃条鲜人参，没事补补身~</div>
+      <div class="pic-wrap">
+        <img src="images/jie04_pic.gif">
+        <span class="danmu">有种加班叫老板还在办公室~</span>
+        <span class="danmu">加班是为了让老板过得更好！</span>
+        <span class="danmu">抱住躲避晚高峰棒棒的寄几</span>
+        <span class="danmu">没事加加班，反正闲着也是闲着</span>
+        <span class="danmu">好的领导！我还能继续加班！</span>
+        <span class="danmu">何以解忧？唯有加班！</span>
+        <span class="danmu">我的心里只有一件事，就是工作！</span>
+        <span class="danmu">有种加班叫老板还在办公室~</span>
+        <span class="danmu">加班是为了让老板过得更好！</span>
+        <span class="danmu">抱住躲避晚高峰棒棒的寄几</span>
+        <span class="danmu">没事加加班，反正闲着也是闲着</span>
+        <span class="danmu">好的领导！我还能继续加班！</span>
+        <span class="danmu">何以解忧？唯有加班！</span>
+        <span class="danmu">我的心里只有一件事，就是工作！</span>
+        <span class="danmu">有种加班叫老板还在办公室~</span>
+        <span class="danmu">加班是为了让老板过得更好！</span>
+        <span class="danmu">抱住躲避晚高峰棒棒的寄几</span>
+        <span class="danmu">没事加加班，反正闲着也是闲着</span>
+        <span class="danmu">好的领导！我还能继续加班！</span>
+        <span class="danmu">何以解忧？唯有加班！</span>
+        <span class="danmu">我的心里只有一件事，就是工作！</span>
+        <span class="danmu">有种加班叫老板还在办公室~</span>
+        <span class="danmu">加班是为了让老板过得更好！</span>
+        <span class="danmu">抱住躲避晚高峰棒棒的寄几</span>
+        <span class="danmu">没事加加班，反正闲着也是闲着</span>
+        <span class="danmu">好的领导！我还能继续加班！</span>
+        <span class="danmu">何以解忧？唯有加班！</span>
+        <span class="danmu">我的心里只有一件事，就是工作！</span>
+      </div>
+    </div>
+    <!-- new part05 -->
+    <div class="end end05 hide">
+      <div class="title">
+        <div class="title-text title-text2">12121</div>
+      </div>
+      <div class="text">吃条鲜人参，碧树在心中！</div>
+      <div class="pic-wrap">
+        <img src="images/jie05_pic.gif">
+        <span class="danmu">我加不加班，你自己心里没点……</span>
+        <span class="danmu">我从来不熬夜，一般都是通宵</span>
+        <span class="danmu">掐指一算，今日不宜加班</span>
+        <span class="danmu">攒下来的假够给自己生个孩子了</span>
+        <span class="danmu">就加两个小时，真的不能再多了</span>
+        <span class="danmu">加班由我不由天</span>
+        <span class="danmu">下班时间都掌握不了，还怎么掌握人生</span>
+        <span class="danmu">今日事昨日毕</span>
+        <span class="danmu">我加不加班，你自己心里没点……</span>
+        <span class="danmu">我从来不熬夜，一般都是通宵</span>
+        <span class="danmu">掐指一算，今日不宜加班</span>
+        <span class="danmu">攒下来的假够给自己生个孩子了</span>
+        <span class="danmu">就加两个小时，真的不能再多了</span>
+        <span class="danmu">加班由我不由天</span>
+        <span class="danmu">下班时间都掌握不了，还怎么掌握人生</span>
+        <span class="danmu">今日事昨日毕</span>
+        <span class="danmu">我加不加班，你自己心里没点……</span>
+        <span class="danmu">我从来不熬夜，一般都是通宵</span>
+        <span class="danmu">掐指一算，今日不宜加班</span>
+        <span class="danmu">攒下来的假够给自己生个孩子了</span>
+        <span class="danmu">就加两个小时，真的不能再多了</span>
+        <span class="danmu">加班由我不由天</span>
+        <span class="danmu">下班时间都掌握不了，还怎么掌握人生。</span>
+        <span class="danmu">今日事昨日毕</span>
+        <span class="danmu">我加不加班，你自己心里没点……</span>
+        <span class="danmu">我从来不熬夜，一般都是通宵</span>
+        <span class="danmu">掐指一算，今日不宜加班</span>
+        <span class="danmu">攒下来的假够给自己生个孩子了</span>
+        <span class="danmu">就加两个小时，真的不能再多了</span>
+        <span class="danmu">加班由我不由天</span>
+        <span class="danmu">下班时间都掌握不了，还怎么掌握人生</span>
+        <span class="danmu">今日事昨日毕</span>
+      </div>
+    </div>
+
+    <div class="end end06 hide">
+      <div class="title">
+        <div class="title-text title-text2">12121</div>
+      </div>
+      <div class="text">吃条鲜人参，健康又养生~</div>
+      <div class="pic-wrap">
+        <img src="images/jie06_pic.gif">
+        <span class="danmu">懒癌不能碰，自救要趁早！</span>
+        <span class="danmu">工作效率高，下班下的早！</span>
+        <span class="danmu">好好工作，天天向上！</span>
+        <span class="danmu">加班伤身，吃颗人参</span>
+        <span class="danmu">加班是什么，能吃吗？</span>
+        <span class="danmu">朝九晚五，远离过劳肥</span>
+        <span class="danmu">人家就是不想加班嘛</span>
+        <span class="danmu">丑的人还在加班，帅的人早已离去~</span>
+        <span class="danmu">懒癌不能碰，自救要趁早！</span>
+        <span class="danmu">工作效率高，下班下的早！</span>
+        <span class="danmu">好好工作，天天向上！</span>
+        <span class="danmu">加班伤身，吃颗人参</span>
+        <span class="danmu">加班是什么，能吃吗？</span>
+        <span class="danmu">朝九晚五，远离过劳肥</span>
+        <span class="danmu">人家就是不想加班嘛</span>
+        <span class="danmu">丑的人还在加班，帅的人早已离去~</span>
+        <span class="danmu">懒癌不能碰，自救要趁早！</span>
+        <span class="danmu">工作效率高，下班下的早！</span>
+        <span class="danmu">好好工作，天天向上！</span>
+        <span class="danmu">加班伤身，吃颗人参</span>
+        <span class="danmu">加班是什么，能吃吗？</span>
+        <span class="danmu">朝九晚五，远离过劳肥</span>
+        <span class="danmu">人家就是不想加班嘛。</span>
+        <span class="danmu">丑的人还在加班，帅的人早已离去~</span>
+        <span class="danmu">懒癌不能碰，自救要趁早！</span>
+        <span class="danmu">工作效率高，下班下的早！</span>
+        <span class="danmu">好好工作，天天向上！</span>
+        <span class="danmu">加班伤身，吃颗人参</span>
+        <span class="danmu">加班是什么，能吃吗？</span>
+        <span class="danmu">朝九晚五，远离过劳肥</span>
+        <span class="danmu">人家就是不想加班嘛</span>
+        <span class="danmu">丑的人还在加班，帅的人早已离去~</span>
+      </div>
+    </div>
+  <div class="button metoo"></div>
+
+</div>
+
+<div class="part part-tankuang">
+  <img class="bg" src="images/tankuang.png">
+  <div class="close"></div>
+  <a class="button" href="../kmall/indgroup_details.html?id=A25470421080001&mkye=1"></a>
+</div>
+
+<div class="part part-share">
+  <img class="bg" src="images/share.png">
+</div>
+
+<div class="part part-noselect">
+  <img class="bg" src="images/noselect.png">
+  <div class="button"></div>
+</div>
+
+</body>
+
+<script type="text/javascript" src="js/swiper.min.js"></script>
+
+
+
+<script>
+weixin={
+   share:function(title,link,imgUrl,desc){
+
+     var data={
+       title: title ? title:window.sharetitle, // 分享标题
+       //link: "http://km.acarry.com/page/wx/mkye/index.html?end="+window.end +"&name="+encodeURI(window.username), // 分享链接 
+       // link: "http://m.kangmei.com.cn/page/wx/mkye/index.html?end="+window.end +"&name="+encodeURI(window.username), // 分享链接 
+       link: link ? link:"http://test.palm-h.com/main/2017/mkye2/index.html?end="+window.end +"&name="+encodeURI(window.username), // 分享链接 
+       imgUrl: imgUrl ? imgUrl:"http://test.palm-h.com/main/2017/mkye2/jssdk/logo.jpg", // 分享图标
+       desc: desc ? desc: window.sharedesc, // 分享描述,
+       success:function(){
+         TDAPP.onEvent('分享成功');
+       },
+       cancel:function(){
+
+       }
+     };
+     wx.onMenuShareTimeline({ ////分享到朋友圈
+       title: data.desc, // 分享标题
+       link: data.link, // 分享链接
+       imgUrl: data.imgUrl, // 分享图标
+       success: data.success,
+       cancel: data.cancel
+     });
+     wx.onMenuShareAppMessage({  ////分享给好友
+       title: data.title, // 分享标题
+       desc: data.desc, // 分享描述
+       link: data.link, // 分享链接
+       imgUrl: data.imgUrl, // 分享图标
+       type: '', // 分享类型,music、video或link，不填默认为link
+       dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+       success: data.success,
+       cancel: data.cancel
+     });
+
+   }
+ }
+if(userDatas.code=="0" && userDatas.data ){//
+	wx.ready(function(){
+    console.log();
+		weixin.share();
+	});
+}
+</script>
+<script type="text/javascript" src="js/index.js"></script>
+</html>

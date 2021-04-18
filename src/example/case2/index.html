@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 页面描述 -->
+    <meta name='description' content='不超过150个字符' />
+    <!-- 页面关键词 -->
+    <meta name='keywords' content='浦力适小游戏' />
+    <!-- 忽略页面中的数字识别为电话，忽略email识别 -->
+    <meta name='format-detection' content='telphone=no, email=no' />
+    <!--360浏览器双核的极速模式(choose webkit) -->
+    <meta name='renderer' content='webkit' />
+
+    <title>浦力适小游戏</title>
+    <!-- 清除浏览器默认样式 -->
+    <link rel="stylesheet" href="css/base.css" />
+    <style>
+   
+    </style>
+    <link rel="stylesheet" href="css/index.css" />
+</head>
+
+<body>
+    <audio id='jump' src="img/jump.mp3"></audio>
+    <audio id='boli' src="img/boli.mp3"></audio>
+    <audio id='shui' src="img/shui.mp3"></audio>
+    <audio id='bgM' src="img/bgM.mp3" preload loop></audio>
+    <div id="orientLayer" class="mod-orient-layer">
+        <div class="mod-orient-layer__content">
+            <i class="icon mod-orient-layer__icon-orient"></i>
+            <div class="mod-orient-layer__desc">为了更好的体验，请使用竖屏浏览</div>
+        </div>
+    </div>
+    <div class="part part1 active">
+        <img class="gif" src="./img/bg1_gif2.gif">
+        <img class="title" src="./img/bg1_gif1.gif">
+        <img class="title2" src="./img/title2.jpg">
+        <div class="begin common"></div>
+        <!-- <div class="read common"></div> -->
+    </div>
+    <div class="part part2">
+        <div class="read-rule common"></div>
+    </div>
+    <div class="part part3">
+        <div class="y-hui">
+            <div class="hui"></div>
+            <div class="yh-juan common">
+                <img src="img/tkling.png">
+                <div class="text common">
+                    双11特惠，使用￥浦力适专业除 湿机50元无门槛优惠免费领！ 双十一惠上加惠！￥抢先预览 （长按复制整段文案，打开手机 淘宝即可进入活动内容）
+                </div>
+                <button class="yh-btn common btn" data-clipboard-text="双11特惠，使用￥浦力适专业除 湿机50元无门槛优惠免费领！ 双十一惠上加惠！￥抢先预览 （长按复制整段文案，打开手机 淘宝即可进入活动内容）"></button>
+            </div>
+        </div>
+        <div class="share-zs">
+            <div class="hui"></div>
+            <div class="ts-img">
+                <img src="img/tishi.png">
+            </div>
+        </div>
+        <div class="p3-content">
+            <div class="fen1 fen">123分</div>
+            <div class="fen2 fen">123分</div>
+            <div class="fen3 fen">第1名</div>
+        </div>
+        <img class="qcode " src="img/qc.png" alt="">
+        <div class="play-again com1"></div>
+        <div class="rank com1"></div>
+        <div class="share com1"></div>
+        <div class="get com1"></div>
+    </div>
+    <div class="part part4">
+        <div class="p4-content">
+            <div class="list1">
+                <div class="user">小鬼</div>
+                <div class="fen1 fen">123分</div>
+            </div>
+            <div class="list2">
+                <div class="user">小鬼</div>
+                <div class="fen2 fen">第1名</div>
+            </div>
+        </div>
+        <div class="text">您为朋友的红人榜加了<span class="red">1</span>分！</div>
+        <div class="want-play common"></div>
+    </div>
+    <div class="part part5">
+        <div class="btn-zh common">
+            <div class="gs com2"></div>
+            <div class="red com2"></div>
+        </div>
+        <div class="data-box common">
+            <div class="gs-person">
+                <!-- <div class="list">
+                    <div class="ph">01</div>
+                    <div class="user">小鬼</div>
+                    <div class="fs">18999</div>
+                </div> -->
+                
+            </div>
+            <div class="red-person">
+                <!-- <div class="list">
+                    <div class="ph">01</div>
+                    <div class="user">小鬼</div>
+                    <div class="fs">18999</div>
+                </div> -->
+             
+            </div>
+        </div>
+        <div class="p-again common"></div>
+    </div>
+    <div class="game">
+        <div class="mc">
+            <div class="hui"></div>
+            <img src="img/alert.png" alt="">
+            <div class="sure cot"></div>
+            <div class="cancel cot"></div>
+        </div>
+        <div class="game-head">
+            你的分数是 
+            <span class="game-fen">0</span>
+            <div class="sound-btn"></div>
+            <i class="play-slider"></i>
+        </div>
+        <img class="game-bg" src="img/bg.jpg" alt="">
+        <canvas id="myCanvas"></canvas>
+    </div>
+</body>
+
+
+<!-- 手机jquery -->
+<script src="js/zepto.js"></script>
+<!-- touch手势库配合zepto.js库 -->
+<script src="js/touch.js"></script>
+<!-- 手机rem自适应库 -->
+<script src="js/rem.js"></script>
+<script src="js/nosleep.js"></script>
+
+<script src="js/clipboard.min.js"></script>
+
+<script src="js/easeljs.min.js"></script>
+<script src="js/preloadjs.min.js"></script>
+<script src="js/doll.js"></script>
+<script src="js/drip.js"></script>
+<script src="js/platform.js"></script>
+<script src="js/ice.js"></script>
+<script src="js/index.js"></script>
+
+<script src="js/init.js"></script>
+
+</html>

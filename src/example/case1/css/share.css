@@ -1,0 +1,238 @@
+@charset "UTF-8";
+/**
+ * $fileOverview common[css常用实现封装,, 以fis-开头命名]
+ * $author y.g.q
+ * $date   2014.9.22
+ * $mail   yinguoqing$kingsoft.com
+ */
+/**
+ * .fis-clearfix
+ * $description 清除浮动(不需要添加额外标签)
+ */
+/**
+ * .fis-float
+ * $description 浮动(解决IE6 double margin问题) 
+ * $param [$side=left] 浮动方向
+ */
+/**
+ * .fis-float-left
+ * $description 左浮动
+ */
+/**
+ * .fis-float-right
+ * $description 右浮动
+ */
+/**
+ * .fis-inline-block
+ * $description inline-block展示(兼容inline和block元素)
+ */
+/**
+ * .fis-border-radius
+ * $description 圆角(support IE9+、Firefox 3.5+、Safari、Chrome、Opera)
+ * $param [$radius=5px] 圆角半径
+ */
+/**
+ * .fis-box-shadow
+ * $description 阴影(support Firefox 3.5+、Safari、Chrome、Opera)
+ * $param $shadow 阴影参数(水平偏移值 | 垂直偏移值 | 阴影模糊值 | 阴影颜色)
+ */
+/**
+ * .fis-gradient-vertical
+ * $description 背景垂直渐变(support IE8+、Firefox 3.5+、Safari、Chrome、Opera)
+ * $param [$startColor=#555] 颜色渐变初始值
+ * $param [$endColor=#333] 颜色渐变终值
+ */
+/**
+ * .fis-transition
+ */
+/**
+ * .fis-opacity
+ * $description 透明度(support IE6+、Firefox 3.5+、Safari、Chrome、Opera)
+ * $param [$opacity=100] 透明度值
+ */
+/**
+ * .fis-nowrap
+ * $description 文本不折行
+ */
+/**
+ * .fis-min-height
+ * $description 最小高度
+ * $param [$value] 最小高度值
+ */
+/**
+ * .fis-min-width
+ * $description 最小宽度
+ * $param [$value] 最小宽度值
+ */
+/**
+ * .fis-icon
+ * $description 方形icon 
+ */
+/**
+ * .fis-icon-rect
+ * $description 长方形icon 
+ */
+/**
+ * .icon-arrow
+ * $description 箭头
+ */
+/**
+ * .fis-rotate
+ * $description 旋转
+ */
+/**
+ * .fis-rotate-y
+ * $description 反转
+ */
+/**
+ * .fis-rotate-x
+ * $description 旋转
+ */
+html {
+  width: 100%;
+  height: 100%;
+  font-size: 50px; }
+
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-image: url("../images/bg.jpg");
+  background-size: 100% auto; }
+
+.music-button {
+  position: fixed;
+  top: 0.25rem;
+  right: 0.30rem;
+  width: 0.50rem;
+  height: 0.50rem;
+  background: url("../images/music.png") no-repeat;
+  background-size: cover;
+  z-index: 100; }
+
+.music-button.on {
+  -webkit-animation: rotate 3s linear both infinite;
+  -o-animation: rotate 3s linear both infinite;
+  animation: rotate 3s linear both infinite; }
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+@keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+.part {
+  position: relative;
+  width: 100%;
+  height: 100%; }
+
+.share .img01 {
+  display: block;
+  position: absolute;
+  top: 0.8rem;
+  right: 0;
+  width: 7.5rem;
+  -webkit-animation: rightSwper 600ms;
+  -o-animation: rightSwper 600ms;
+  animation: rightSwper 600ms; }
+
+.share .img02 {
+  display: block;
+  position: absolute;
+  top: 2.93rem;
+  left: 0;
+  width: 7.5rem;
+  -webkit-animation: leftSwper 600ms 600ms both;
+  -o-animation: leftSwper 600ms 600ms both;
+  animation: leftSwper 600ms 600ms both; }
+
+.share .button {
+  position: absolute;
+  top: 10.45rem;
+  width: 3.22rem;
+  height: 0.83rem;
+  background-size: cover; }
+  .share .button.button-play {
+    left: 0.3rem;
+    background-image: url("../images/share_button_play.png"); }
+  .share .button.button-hui {
+    right: 0.3rem;
+    background-image: url("../images/share_button_hui.png"); }
+
+@-webkit-keyframes rightSwper {
+  from {
+    -webkit-transform: translate(100%, 0);
+    -moz-transform: translate(100%, 0);
+    -ms-transform: translate(100%, 0);
+    -o-transform: translate(100%, 0);
+    transform: translate(100%, 0); }
+  to {
+    -webkit-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+    transform: translate(0, 0); } }
+
+@keyframes rightSwper {
+  from {
+    -webkit-transform: translate(100%, 0);
+    -moz-transform: translate(100%, 0);
+    -ms-transform: translate(100%, 0);
+    -o-transform: translate(100%, 0);
+    transform: translate(100%, 0); }
+  to {
+    -webkit-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+    transform: translate(0, 0); } }
+
+@-webkit-keyframes leftSwper {
+  from {
+    -webkit-transform: translate(-100%, 0);
+    -moz-transform: translate(-100%, 0);
+    -ms-transform: translate(-100%, 0);
+    -o-transform: translate(-100%, 0);
+    transform: translate(-100%, 0); }
+  to {
+    -webkit-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+    transform: translate(0, 0); } }
+
+@keyframes leftSwper {
+  from {
+    -webkit-transform: translate(-100%, 0);
+    -moz-transform: translate(-100%, 0);
+    -ms-transform: translate(-100%, 0);
+    -o-transform: translate(-100%, 0);
+    transform: translate(-100%, 0); }
+  to {
+    -webkit-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+    transform: translate(0, 0); } }

@@ -1,0 +1,457 @@
+			/****     Created by Bin on 2017/08/22     ****/
+
+/*=============================   通用   =============================*/
+	body,html,.wrap,.loading,.main,.sex,.share,.end,.video,.s_share{ width: 100%; height: 100% }
+	.wrap{
+		text-align: center;
+		overflow: hidden;
+	}
+	img{
+		width: 100%;
+	}
+	/* logo */
+	.logo{
+		width: 1.61rem;
+		position: absolute;
+		top: 0;
+		left: 0.25rem;
+		z-index: 100;
+	}
+	/* 视频 */
+	.video{
+		display: none;
+		background: black;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 100;
+	}
+	.video video{
+		display: block;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+		z-index: 100;
+	}
+
+/*===========================   loading   ===========================*/
+	.loading{
+		display: none;
+		background: #ce1032;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	.a_main{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		-o-transform: translate(-50%,-50%);
+		-ms-transform: translate(-50%,-50%);
+		-moz-transform: translate(-50%,-50%);
+		-webkit-transform: translate(-50%,-50%);
+	}
+	.bar{
+		width: 5.84rem;
+		height: 0.22rem;
+		border: 5px solid #5c1a19;
+		border-radius: 5px;
+		overflow: hidden;
+		position: relative;
+	}
+	.bar_after{
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		margin: auto;
+		background: #fed636;
+		transform: translateX(-100%);
+		-o-transform: translateX(-100%);
+		-ms-transform: translateX(-100%);
+		-moz-transform: translateX(-100%);
+		-webkit-transform: translateX(-100%);
+		transition: all 1s;
+		-o-transition: all 1s;
+		-moz-transition: all 1s;
+		-webkit-transition: all 1s;
+	}
+	.tiger{
+		width: 1.33rem;
+		position: absolute;
+		top: -.5rem;
+		left: 0;
+		transform: translateX(-50%);
+		-o-transform: translateX(-50%);
+		-ms-transform: translateX(-50%);
+		-moz-transform: translateX(-50%);
+		-webkit-transform: translateX(-50%);
+		transition: all 1s;
+		-o-transition: all 1s;
+		-moz-transition: all 1s;
+		-webkit-transition: all 1s;
+	}
+	.a_text{
+		width: 1.52rem;
+		margin-top: .9rem;
+	}
+
+/*=============================   主页   =============================*/
+	.main{
+		display: none;
+		background: #fed636;
+		position: relative;
+	}
+	.m_bottom{
+		width: 100%;
+		height: 4.92rem;
+		background: url(../images/m_bottom.png) no-repeat center bottom;
+		background-size: 100% 100%;
+		position: absolute;
+		bottom: 0;
+	}
+	.m_people img{
+		width: 7.01rem;
+		margin-top: .2rem;
+	}
+	.m_box1{
+		text-align: left;
+	}
+	.m_box1 img{
+		vertical-align: middle;
+	}
+	.m_video{
+		width: 2.2rem;
+		margin-left: .2rem;
+	}
+	.m_hand{
+		width: 1.72rem;
+		margin-left: -.75rem;
+	}
+	.m_text{
+		width: 5.86rem;
+		margin-top: .2rem;
+	}
+	.m_box2{
+		margin-top: .1rem;
+		position: relative;
+	}
+	.m_test{
+		width: 2.89rem;
+	}
+	.m_lead{
+		width: 1.11rem;
+		position: absolute;
+		top: -.25rem;
+		left: 5.4rem;
+	}
+	
+/*===========================   男女选项   ===========================*/
+	.sex{
+		display: none;
+		background: #ce1032;
+	}
+	.s_bottom{
+		width: 100%;
+		height: 5.18rem;
+		background: url(../images/s_bottom.png) no-repeat center bottom;
+		background-size: 100% 100%;
+		position: absolute;
+		top: 6.7rem;
+	}
+	.s_select{
+		margin-top: 2.2rem;
+	}
+	/* 共用 */
+	.boy{
+		background: #2e7fab;
+	}
+	.girl{
+		background: #fed636;
+	}
+	.vewin{
+		width: 2.25rem;
+		position: absolute;
+		top: 0;
+		left: 0.15rem;
+		z-index: 100;
+	}
+	/* 问题 */
+	.question{
+		width: 6.61rem;
+		height: 6.21rem;
+		background: url(../images/problem_box.png) no-repeat;
+		background-size: 100% 100%;
+		position: absolute;
+		top: 1.05rem;
+		left: 0;
+		right: 0;
+		margin: auto;
+		z-index: 10;
+	}
+	.b_bottom{
+		width: 100%;
+		height: 8.22rem;
+		background: url(../images/b_bottom.png) no-repeat;
+		background-size: 100% 100%;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+	}
+	/* 答案 */
+	.answer{
+		margin-left: .68rem;
+		margin-top: 3.7rem;
+		text-align: left;
+	}
+	.answer li{
+		width: 4.5rem;
+		margin-bottom: .35rem;
+	}
+	.answer li label{
+		display: inline-block;
+		font-size: .33rem;
+		width: 3rem;
+		color: white;
+		background: #5c1a19;
+		border: 3px solid white;
+		vertical-align: middle;
+		padding: .12rem .2rem;
+		line-height: 1.25;
+	}
+	.answer li::before{
+		content: "";
+		display: inline-block;
+		vertical-align: middle;
+		width: 0.68rem;
+		height: 0.65rem;
+		margin-right: .1rem;
+	}
+	.answer li:first-child::before{
+		background: url(../images/a.png);
+		background-size: 100% 100%;
+	}
+	.answer li:nth-of-type(2)::before{
+		background: url(../images/b.png);
+		background-size: 100% 100%;
+	}
+	.answer li:nth-of-type(3)::before{
+		background: url(../images/c.png);
+		background-size: 100% 100%;
+	}
+	.answer li:nth-of-type(4)::before{
+		background: url(../images/d.png);
+		background-size: 100% 100%;
+	}
+	/* 人物 */
+	.b_people{
+		width: 2.5rem;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		z-index: 10;
+	}
+	
+/*===========================   男女分享   ===========================*/
+	.share{
+		display: none;
+		position: relative;
+	}
+	.share1,.share3,.share5{
+		background: #fed636;
+	}
+	.share2,.share4,.share6{
+		background: #2e7fac;
+	}
+	.who{
+		width: 100%;
+		background: url(../images/who.png) no-repeat left top;
+		background-size: 100% auto;
+	}
+	.wz{
+		width: 1.23rem;
+		position: absolute;
+		top: 0.7rem;
+		left: 1.7rem;
+	}
+	.s_people{
+		width: 2.66rem;
+		margin: auto;
+	}
+	.s_people img{
+		margin-top: 2.06rem;
+	}
+	.s_who{
+		margin: .1rem auto;
+	}
+	.s_who img{
+		vertical-align: bottom;
+	}
+	.s_you{
+		width: 3.15rem;
+		margin-right: .1rem;
+	}
+	.s_username{
+		width: auto;
+		height: .64rem;
+	}
+	/* 人物文字说明 */
+	.w_text{
+		width: 6.9rem;
+		height: 1.2rem;
+		margin: auto;
+		background: #fed636;
+		font-size: .25rem;
+		line-height: .40rem;
+		color: #5c1a19;
+		text-indent: .5em;
+		text-align: left;
+		overflow-y: scroll;
+		-ms-overflow-style:none;
+	}
+	.w_text::-webkit-scrollbar{ width:0px }
+	.w_text span{
+		font-size: .25rem;
+		color: #ce1032;
+	}
+	.share2 .w_text,.share4 .w_text,.share6 .w_text{
+		background: #2e7fac;
+		color: white;
+	}
+	.share2 .w_text span,.share4 .w_text span,.share6 .w_text span{
+		color: #fed636;
+	}
+	.share3 .w_text,.share4 .w_text{
+		height: 2rem;
+	}
+	.s_match{
+		margin: .2rem 0;
+	}
+	.s_match img{
+		vertical-align: middle;
+	}
+	.pipei{
+		width: 3.7rem;
+		margin-right: .1rem;
+	}
+	.match_value{
+		width: auto;
+		height: .71rem;
+	}
+	.share5 .w_text,.share6 .w_text{
+		width: 6.5rem;
+		text-align: center;
+		text-indent: 0;
+	}
+	/* 人物底部 */
+	.w_bottom{
+		width: 100%;
+		height: 5.6rem;
+		background: url(../images/w_bottom.png) no-repeat left top;
+		background-size: 100% 100%;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+	}
+	.w_btn{
+		margin-top: 1.87rem;
+	}
+	.buy{
+		width: 2.94rem;
+		margin-right: .15rem;
+	}
+	.share_btn{
+		width: 3.7rem;
+	}
+	.s_text{
+		width: 3.71rem;
+		margin: .1rem 0 .2rem;
+	}
+	/* 匹配人物 */
+	.w_match{
+		width: 6.32rem;
+		margin: auto;
+		overflow: hidden;
+	}
+	.w_match li{
+		width: 1rem;
+		margin-right: .76rem;
+		float: left;
+	}
+	.w_match li:last-child{
+		margin-right: 0;
+	}
+	.w_match li .w_cir{
+		width: 1rem;
+		height: 1rem;
+		border-radius: 50%;
+		background: #5c1a19;
+	}
+	.w_match li img{
+		width: auto;
+		height: 0.32rem;
+		margin-top: .05rem;
+	}
+	/* 二次分享底部 */
+	.t_bottom{
+		width: 100%;
+		height: 4.22rem;
+		background: url(../images/t_bottom.png) no-repeat left top;
+		background-size: 100% 100%;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+	}
+	.t_btn{
+		width: 5.36rem;
+		margin-top: 2.7rem;
+	}
+	/* 二次分享结束底部 */
+	.e_bottom{
+		width: 100%;
+		height: 3.72rem;
+		background: url(../images/e_bottom.png) no-repeat left top;
+		background-size: 100% 100%;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+	}
+	.e_btn{
+		margin-top: 2.1rem;
+	}
+	.test{
+		width: 3.69rem;
+	}
+
+/*=============================   结束   =============================*/
+	.end{
+		display: none;
+		position: relative;
+		background: #fed636;
+	}
+	.end_bottom{
+		width: 100%;
+		position: absolute;
+		left: 0;
+		bottom: 0;
+	}
+
+/*=============================   分享   =============================*/
+	.s_share{
+		display: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 100;
+		background: rgba(0,0,0,.5);
+	}
+	.s_btn{
+		position: absolute;
+		width: 2.45rem;
+		top: .1rem;
+		right: .5rem;
+	}

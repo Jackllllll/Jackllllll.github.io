@@ -1,0 +1,90 @@
+@charset "UTF-8";
+/**
+ * $fileOverview common[css常用实现封装,, 以fis-开头命名]
+ * $author y.g.q
+ * $date   2014.9.22
+ * $mail   yinguoqing$kingsoft.com
+ */
+/**
+ * .fis-clearfix
+ * $description 清除浮动(不需要添加额外标签)
+ */
+/**
+ * .fis-float
+ * $description 浮动(解决IE6 double margin问题) 
+ * $param [$side=left] 浮动方向
+ */
+/**
+ * .fis-float-left
+ * $description 左浮动
+ */
+/**
+ * .fis-float-right
+ * $description 右浮动
+ */
+/**
+ * .fis-inline-block
+ * $description inline-block展示(兼容inline和block元素)
+ */
+/**
+ * .fis-border-radius
+ * $description 圆角(support IE9+、Firefox 3.5+、Safari、Chrome、Opera)
+ * $param [$radius=5px] 圆角半径
+ */
+/**
+ * .fis-box-shadow
+ * $description 阴影(support Firefox 3.5+、Safari、Chrome、Opera)
+ * $param $shadow 阴影参数(水平偏移值 | 垂直偏移值 | 阴影模糊值 | 阴影颜色)
+ */
+/**
+ * .fis-gradient-vertical
+ * $description 背景垂直渐变(support IE8+、Firefox 3.5+、Safari、Chrome、Opera)
+ * $param [$startColor=#555] 颜色渐变初始值
+ * $param [$endColor=#333] 颜色渐变终值
+ */
+/**
+ * .fis-transition
+ */
+/**
+ * .fis-opacity
+ * $description 透明度(support IE6+、Firefox 3.5+、Safari、Chrome、Opera)
+ * $param [$opacity=100] 透明度值
+ */
+/**
+ * .fis-nowrap
+ * $description 文本不折行
+ */
+/**
+ * .fis-min-height
+ * $description 最小高度
+ * $param [$value] 最小高度值
+ */
+/**
+ * .fis-min-width
+ * $description 最小宽度
+ * $param [$value] 最小宽度值
+ */
+/**
+ * .fis-icon
+ * $description 方形icon 
+ */
+/**
+ * .fis-icon-rect
+ * $description 长方形icon 
+ */
+/**
+ * .icon-arrow
+ * $description 箭头
+ */
+/**
+ * .fis-rotate
+ * $description 旋转
+ */
+/**
+ * .fis-rotate-y
+ * $description 反转
+ */
+/**
+ * .fis-rotate-x
+ * $description 旋转
+ */

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 页面描述 -->
+    <meta name='description' content='16届亚洲马拉松' />
+    <!-- 页面关键词 -->
+    <meta name='keywords' content='16届亚洲马拉松' />
+    <meta name='format-detection' content='telphone=no, email=no' />
+    <meta name='renderer' content='webkit' />
+    <title>马拉松</title>
+    <link rel="alternate icon" type="image/png" href="img/icon.png">
+    <link rel="shortcut icon" type="image/ico" href="img/icon.ico" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/match.css">
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="center">
+                <h4 class="t-top">全程42.195公里</h4>
+                <h5>起点</h5>
+                <h6>终点</h6>
+                <img class="person" src="img/match-person.png" alt="">
+                <span class="place">市中心广场</span>
+                <span class="place">东莞大道（东侧北行）</span>
+                <span class="place">右转—鸿福东路 （南侧东行）</span>
+                <span class="place">八一路（南侧东行）</span>
+                <span class="place">金富路（东侧南行）（逆行）</span>
+                <span class="place">金富路、 香市路路口 （折返）</span>
+                <span class="place">迎宾路（南侧东行）</span>
+                <span class="place">新城路（西侧北行） （逆行）</span>
+                <span class="place">新城路（西侧南行）</span>
+                <span class="place">松山湖（生态园） 管委会正门</span>
+                <div class="box">
+                    <h4>恭喜您</h4>
+                    <p class="txt-1">成为第
+                        <span class="get">0</span>位 为第16届亚洲马拉松 锦标赛助跑员加油哦，您与中国队 已跑至
+                        <span>市中心广场</span> 街道。 </p>
+                    <!-- <p class="txt=2">加油哦，您与中国队 已跑至 <span>市中心广场</span>街道。</p> -->
+                    <div class="btn">为其它运动员点赞助力</div>
+                </div>
+        </div>
+
+    </div>
+</body>
+<script src="js/jquery.min.js"></script>
+<script>
+    (function (window) {
+        var piList = [
+            {
+                num: 0,
+                attr: { top: '119px', left: '-549px' }
+            },
+            {
+                num: 1,
+                attr: { top: '119px', left: '-459px' }
+            },
+            {
+                num: 500,
+                attr: { top: '149px', left: '-379px' }
+            },
+            {
+                num: 1500,
+                attr: { top: '249px', left: '-279px' }
+            },
+            {
+                num: 2000,
+                attr: { top: '259px', left: '-119px' }
+            },
+            {
+                num: 2500,
+                attr: { top: '119px', left: '-9px' }
+            },
+            {
+                num: 3000,
+                attr: { top: '189px', left: '141px' }
+            },
+            {
+                num: 3500,
+                attr: { top: '319px', left: '91px' }
+            },
+            {
+                num: 4000,
+                attr: { top: '390px', left: '291px' }
+            },
+            {
+                num: 4500,
+                attr: { top: '360px', left: '421px' }
+            }, {
+                num: 5000,
+                attr: { top: '249px', left: '511px' }
+            }
+        ]
+        if ($('.get').html() != '') {
+            var numZ = parseInt($('.get').html());
+            function panduan(num) {
+                if (numZ >= piList[num]['num']) {
+                    $('.person').css(piList[num]['attr']);
+                } else {
+                    return panduan(num - 1);
+                }
+            }
+            panduan(piList.length - 1);
+
+            $('.person').show();
+        }
+        function setwrap() {
+            var center = document.querySelector('.center');
+            var wrap = document.querySelector('.wrap');
+            var centerH  = center.offsetHeight;
+            wrap.style.height = centerH + 'px';
+        }
+        setwrap();
+        window.onresize = setwrap;
+    })(window)
+
+</script>
+
+</html>

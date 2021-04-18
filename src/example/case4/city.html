@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 页面描述 -->
+    <meta name='description' content='16届亚洲马拉松' />
+    <!-- 页面关键词 -->
+    <meta name='keywords' content='16届亚洲马拉松' />
+    <meta name='format-detection' content='telphone=no, email=no' />
+    <meta name='renderer' content='webkit' />
+    <title>马拉松</title>
+    <link rel="alternate icon" type="image/png" href="img/icon.png">
+    <link rel="shortcut icon" type="image/ico" href="img/icon.ico" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/city.css">
+</head>
+
+<body>
+    <div class="cont">
+        <p>
+            东莞，位于广东省中南部，珠江口东岸，地处粤港澳大湾区的中心地带、广深科技创新走廊中部。东莞是与时俱进的国际制造名城。“东莞制造”驰名中外，是世界知名的制造业基地、我国重要的外贸出口基地。多年来，东莞与超过200个国家和地区建立了紧密的经贸合作关系，49家世界500强企业在莞投资项目近100个，累计吸收外资750亿美元。智能手机产业尤其发达，华为、OPPO、VIVO手机出货量均进入全球前五，全球每5部智能手机就有一部来自东莞。
+        </p>
+    </div>
+    <div class="city-left" style=" background-image: url('img/city-bg-04.jpg')">
+        <img class="logo" src="img/city-logo.jpg" alt="">
+    </div>
+    <div class="city-right">
+        <div class="box">
+            <!-- en&ch tab -->
+            <img class="box-top" src="img/city-r-logo-1.png" alt="">
+
+            <div class="box-ti">中国</div>
+            <img class="box-con" src="img/city-r-con.png" alt="">
+            <img class="box-map" src="img/city-map.png" alt="">
+            <div class="little">
+                <h6>
+                    <span>14524</span>人
+                </h6>
+                <span class="text-cent">为中国队马拉松加油助力</span>
+                <img class="box-go" src="img/city-go.png" alt="">
+            </div>
+
+        </div>
+    </div>
+
+</body>
+<script src="js/jquery.min.js"></script>
+<script src="js/scroll.js"></script>
+<script>
+    function setScroll() {
+        $(".cont p").slimScroll({
+            height: '100%',
+            alwaysVisible: true,
+        });
+    }
+
+    setScroll();
+
+    $(window).on("resize", setScroll);
+</script>
+
+</html>
