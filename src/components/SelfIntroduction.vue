@@ -60,12 +60,11 @@ export default {
     };
   },
   computed: {
-    reversedMessage: () => {
+    age() {
       // `this` 指向 vm 实例
       const time = new Date();
       const year = time.getFullYear();
-      const age = year - this.born;
-      return age;
+      return year - this.born;
     },
   },
 };
