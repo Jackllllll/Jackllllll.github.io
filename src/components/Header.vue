@@ -2,7 +2,7 @@
  * @Date: 2021-04-15 16:02:47
  * @Author: zb.lin
  * @Email: lin302010@qq.com
- * @LastEditTime: 2021-04-18 13:35:36
+ * @LastEditTime: 2021-04-20 07:18:53
 -->
 <template>
   <header>
@@ -36,11 +36,11 @@ export default {
     return {
       items: [
         {
-          name: "个人总结",
-          toJumpClassName: ".about_me",
+          name: "个人信息",
+          toJumpClassName: ".SelfIntroduction",
         },
         {
-          name: "专业技能",
+          name: "自我总结及技能",
           toJumpClassName: ".about_me",
         },
         {

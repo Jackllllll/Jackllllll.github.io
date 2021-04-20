@@ -2,7 +2,7 @@
  * @Date: 2021-04-16 17:16:13
  * @Author: zb.lin
  * @Email: lin302010@qq.com
- * @LastEditTime: 2021-04-19 06:44:31
+ * @LastEditTime: 2021-04-20 07:47:17
 -->
 <template>
   <div class="about_me">
@@ -17,19 +17,17 @@
               class="di-small-2 wow fadeInLeft animated"
               src="@/assets/img/3.jpg"
               alt=""
-              style="visibility: visible; animation-name: fadeInLeft"
             />
             <img
-              class="img-fluid wow fadeInRight animated"
+              class="img-fluid wow fadeInRight"
               src="@/assets/img/1.jpg"
               alt=""
-              style="visibility: visible; animation-name: fadeInRight"
             />
           </div>
         </div>
 
         <div
-          class="col-lg-5 offset-md-1 wow fadeInLeft animated"
+          class="col-lg-5 offset-md-1 wow fadeInLeft"
           data-wow-delay=".5s"
           style="
             background-size: cover;
@@ -71,14 +69,25 @@
       >
         <h2>专业技能</h2>
         <p>
-          熟练掌握HTML+CSS+JavaScript三大前端语言，同时熟悉常用的前端语言框架，如vue.JS，ReactJs,JQuery等<br />
-          熟练主流框架Vue.js ，并能通过vue + vuex + vue-router 实现SPA开发<br />
-          熟悉使用JQuery
-          Mobile,Vue,ReactJs进行移动端的页面设计，可以和产品同事协同完成网页的设计工作<br />
-          熟练掌握Photoshop及蓝湖等工具,完美还原设计网页原型，将UI设计转化为符合W3C规范的静态页面<br />
-          熟悉使用Git、SVN工具进行协同开发，团队配合意识良好，能进行前端代码的敏捷开发<br />
-          熟悉使用Element，Vant,iView等多个快速成型工具进开发<br />
-          熟悉Thinkphp-Mysql进行简单的后台搭建，完成后台需要的基本功能，如数据分析、用户分群等
+          熟练掌握<span class="strong">HTML+CSS+JavaScript</span
+          >三大前端语言，同时熟悉常用的前端语言框架，如<span class="strong"
+            >vue.JS，ReactJs,JQuery</span
+          >等<br />
+          熟练主流框架<span class="strong">Vue.js</span> ，并能通过<span
+            class="strong"
+            >vue + vuex + vue-router</span
+          >
+          实现SPA开发<br />
+          熟悉使用<span class="strong"> JQuery Mobile,Vue,ReactJs </span
+          >进行移动端的页面设计，可以和产品同事协同完成网页的设计工作<br />
+          熟练掌握<span class="strong">Photoshop及蓝湖</span
+          >等工具,完美还原设计网页原型，将UI设计转化为符合W3C规范的静态页面<br />
+          熟悉使用<span class="strong">Git、SVN</span
+          >工具进行协同开发，团队配合意识良好，能进行前端代码的敏捷开发<br />
+          熟悉使用<span class="strong">Element，Vant,iView</span
+          >等多个快速成型工具进开发<br />
+          熟悉<span class="strong">Thinkphp-Mysql</span
+          >进行简单的后台搭建，完成后台需要的基本功能，如数据分析、用户分群等
         </p>
       </div>
     </div>
@@ -203,6 +212,9 @@ export default {
     p {
       padding: 0 10%;
       text-emphasis: center;
+      .strong {
+        color: #10afa0;
+      }
     }
     max-height: 0;
     opacity: 0;
