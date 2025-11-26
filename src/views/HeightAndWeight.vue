@@ -1,6 +1,5 @@
-
 <template>
-   <div class="container">
+    <div class="container">
         <div class="header">
             <h1>宝宝成长曲线</h1>
             <p>跟踪宝宝身高、体重发育情况</p>
@@ -79,7 +78,9 @@
             <p>• 点击数据点可以查看详细数值</p>
             <p>• 点击"回到今天"按钮可快速定位到当前日期</p>
             <p>• 记录列表显示每次测量的增长速率，并与标准P50速率进行比较</p>
-            <p>• <span style="color:#4CAF50; font-weight:600">绿色</span>表示比标准快，<span style="color:#f44336; font-weight:600">红色</span>表示比标准慢</p>
+            <p>• <span style="color:#4CAF50; font-weight:600">绿色</span>表示比标准快，<span
+                    style="color:#f44336; font-weight:600"
+                >红色</span>表示比标准慢</p>
         </div>
     </div>
 
@@ -106,7 +107,7 @@ export default {
         window.userInfo = {
             bbbirthday: dayjs(usersData[currentUser].birthday).valueOf()
         };
-     // 计算标准P50身高速率
+        // 计算标准P50身高速率
         function calculateStandardHeightRate(ageYears, ageMonths) {
             // 找到对应的年龄段
             for (let i = 0; i < dataReference.length - 1; i++) {
@@ -152,6 +153,8 @@ export default {
                 current.heightTimeDiff = null;
                 current.weightTimeDiff = null;
                 current.standardHeightRate = null;
+                current.heightDiff = null; // 新增：身高差值
+                current.prevHeightDate = null; // 新增：上一次身高记录日期
 
                 // 计算标准P50身高速率
                 current.standardHeightRate = calculateStandardHeightRate(current.year, current.month);
@@ -172,6 +175,8 @@ export default {
                             const heightDiff = parseFloat(current.height) - parseFloat(prevRecord.height);
                             current.heightRate = heightDiff / timeDiffMonths;
                             current.heightTimeDiff = timeDiffMonths;
+                            current.heightDiff = heightDiff; // 记录身高差值
+                            current.prevHeightDate = prevRecord.record_date; // 记录上一次身高记录日期
                         }
                         break;
                     }
@@ -203,6 +208,28 @@ export default {
 
             return sortedList;
         }
+        // 格式化身高显示，包含差值信息
+        function formatHeightWithDiff(item) {
+            if (!item.height || item.height === '') {
+                return '--';
+            }
+
+            let heightText = item.height;
+
+            // 如果有身高差值，则添加差值信息
+            if (item.heightDiff !== null && item.prevHeightDate) {
+                const diffClass = item.heightDiff >= 0 ? 'positive' : 'negative';
+                const diffSign = item.heightDiff >= 0 ? '+' : '';
+                const diffText = `${diffSign}${item.heightDiff.toFixed(1)}`;
+
+
+
+                heightText += ` <span class="height-diff ${diffClass}">(${diffText}）</span>`;
+            }
+
+            return heightText;
+        }
+
 
         // 格式化速率显示
         function formatRate(rate, timeDiff) {
@@ -276,7 +303,7 @@ export default {
         // 初始化图表
         let chartHelper = new GrowthChartHelper();
         let chartInstance = null;
-     // 获取当前用户的图表数据
+        // 获取当前用户的图表数据
         function getCurrentChartData() {
             const processedList = processUserData(usersData[currentUser].data);
             console.log(processedList)
@@ -289,7 +316,7 @@ export default {
         function updateRecordList() {
             const listBody = document.getElementById('record-list-body');
             const userData = usersData[currentUser];
-            const processedList = processUserData(userData.data,true);
+            const processedList = processUserData(userData.data, true);
 
             // 计算增长速率
             const listWithRates = calculateGrowthRates(processedList);
@@ -307,8 +334,8 @@ export default {
             let html = '';
             listWithRates.forEach((item) => {
                 const age = formatAge({ years: item.year, months: item.month, days: item.day });
-                const height = item.height && item.height !== '' ? item.height : '--';
-                const weight = item.weight && item.weight !== '' ? item.weight : '--';
+                const height = formatHeightWithDiff(item); // 使用新的格式化函数
+                const weight = item.weight && item.weight !== '' ? item.weight + ' kg' : '--';
 
                 // 格式化速率
                 const heightRate = formatRate(item.heightRate, item.heightTimeDiff);
@@ -411,330 +438,336 @@ export default {
     }
 }
 </script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-        }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-        .user-selector {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+.user-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
-        .user-btn {
-            padding: 8px 20px;
-            background-color: #e0e0e0;
-            color: #666;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
+.user-btn {
+    padding: 8px 20px;
+    background-color: #e0e0e0;
+    color: #666;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
 
-        .user-btn.active {
-            background-color: #4CAF50;
-            color: white;
-        }
+.user-btn.active {
+    background-color: #4CAF50;
+    color: white;
+}
 
-        .chart-container {
-            position: relative;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
+.chart-container {
+    position: relative;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
 
-        .chart {
-            width: 100%;
-            height: 500px;
-        }
+.chart {
+    width: 100%;
+    height: 500px;
+}
 
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
-        .btn {
-            padding: 8px 16px;
-            background-color: #fc8ac6;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.2s;
-        }
+.btn {
+    padding: 8px 16px;
+    background-color: #fc8ac6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
 
-        .btn:hover {
-            background-color: #f76cb0;
-        }
+.btn:hover {
+    background-color: #f76cb0;
+}
 
-        .btn:active {
-            transform: translateY(1px);
-        }
+.btn:active {
+    transform: translateY(1px);
+}
 
-        .info-panel {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-        }
+.info-panel {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
 
-        .info-panel h3 {
-            margin-bottom: 10px;
-            color: #333;
-        }
+.info-panel h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
 
-        .info-panel p {
-            margin-bottom: 8px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
+.info-panel p {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+}
 
-        .type-selector {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+.type-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
-        .type-btn {
-            padding: 8px 20px;
-            background-color: #f0f0f0;
-            color: #666;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
+.type-btn {
+    padding: 8px 20px;
+    background-color: #f0f0f0;
+    color: #666;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
 
-        .type-btn.active {
-            background-color: #fc8ac6;
-            color: white;
-        }
+.type-btn.active {
+    background-color: #fc8ac6;
+    color: white;
+}
 
-        .today-btn {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            z-index: 10;
-            padding: 6px 12px;
-            background-color: #ec7268;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            display: none;
-        }
+.today-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 10;
+    padding: 6px 12px;
+    background-color: #ec7268;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    display: none;
+}
 
-        /* 记录列表样式 */
+/* 记录列表样式 */
 
-    /* 记录列表样式 */
-    .record-list {
-        background: white;
-        border-radius: 12px;
-        padding: 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        margin-bottom: 20px;
-        overflow-x: auto; /* 添加水平滚动 */
-    }
+/* 记录列表样式 */
+.record-list {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    overflow-x: auto;
+    /* 添加水平滚动 */
+}
 
-    .record-list h3 {
-        margin-bottom: 15px;
-        color: #333;
-        text-align: center;
-    }
+.record-list h3 {
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+}
 
-    .record-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 14px;
-        min-width: 800px; /* 设置最小宽度，确保表格不会被压缩 */
-        white-space: nowrap; /* 防止内容换行 */
-    }
+.record-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 800px;
+    /* 设置最小宽度，确保表格不会被压缩 */
+    white-space: nowrap;
+    /* 防止内容换行 */
+}
 
-    .record-table th {
-        background-color: #f8f8f8;
-        padding: 12px 8px;
-        text-align: left;
-        font-weight: 600;
-        border-bottom: 2px solid #eee;
-        white-space: nowrap; /* 表头不换行 */
-    }
+.record-table th {
+    background-color: #f8f8f8;
+    padding: 12px 8px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #eee;
+    white-space: nowrap;
+    /* 表头不换行 */
+}
 
-    .record-table td {
-        padding: 12px 8px;
-        border-bottom: 1px solid #eee;
-        white-space: nowrap; /* 单元格内容不换行 */
-    }
+.record-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #eee;
+    white-space: nowrap;
+    /* 单元格内容不换行 */
+}
 
-    .record-table tbody tr:hover {
-        background-color: #f9f9f9;
-    }
+.record-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
 
-    /* 调整列宽，确保所有列都能正常显示 */
-    .record-table .date-col {
-        min-width: 100px;
-    }
+/* 调整列宽，确保所有列都能正常显示 */
+.record-table .date-col {
+    min-width: 100px;
+}
 
-    .record-table .age-col {
-        min-width: 80px;
-    }
+.record-table .age-col {
+    min-width: 80px;
+}
 
-    .record-table .height-col,
-    .record-table .weight-col {
-        min-width: 80px;
-        text-align: right;
-    }
+.record-table .height-col,
+.record-table .weight-col {
+    min-width: 80px;
+    text-align: right;
+}
 
-    .record-table .height-rate-col,
-    .record-table .weight-rate-col,
-    .record-table .standard-rate-col {
-        min-width: 120px;
-        text-align: right;
-    }
+.record-table .height-rate-col,
+.record-table .weight-rate-col,
+.record-table .standard-rate-col {
+    min-width: 120px;
+    text-align: right;
+}
 
-    /* 确保时间差和比较指示器不换行 */
-    .time-diff,
-    .comparison-indicator {
-        white-space: nowrap;
-        display: inline-block;
-    }
+/* 确保时间差和比较指示器不换行 */
+.time-diff,
+.comparison-indicator {
+    white-space: nowrap;
+    display: inline-block;
+}
 
-    .rate-positive {
-        color: #4CAF50;
-        font-weight: 500;
-    }
+.rate-positive {
+    color: #4CAF50;
+    font-weight: 500;
+}
 
-    .rate-negative {
-        color: #f44336;
-        font-weight: 500;
-    }
+.rate-negative {
+    color: #f44336;
+    font-weight: 500;
+}
 
-    .rate-neutral {
-        color: #666;
-    }
+.rate-neutral {
+    color: #666;
+}
 
-    .rate-better {
-        color: #4CAF50;
-        font-weight: 600;
-    }
+.rate-better {
+    color: #4CAF50;
+    font-weight: 600;
+}
 
-    .rate-worse {
-        color: #f44336;
-        font-weight: 600;
-    }
+.rate-worse {
+    color: #f44336;
+    font-weight: 600;
+}
 
-    .rate-same {
-        color: #666;
-        font-weight: 500;
-    }
+.rate-same {
+    color: #666;
+    font-weight: 500;
+}
 
-    .no-data {
-        text-align: center;
-        padding: 20px;
-        color: #999;
-        font-style: italic;
-    }
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+    font-style: italic;
+}
 
-    /* 添加滚动条样式 */
-    .record-list::-webkit-scrollbar {
-        height: 8px;
-    }
+/* 添加滚动条样式 */
+.record-list::-webkit-scrollbar {
+    height: 8px;
+}
 
-    .record-list::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 4px;
-    }
+.record-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
 
-    .record-list::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
-        border-radius: 4px;
-    }
+.record-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
 
-    .record-list::-webkit-scrollbar-thumb:hover {
-        background: #a8a8a8;
-    }
-        .record-table .standard-rate-col {
-            width: 15%;
-            text-align: right;
-        }
+.record-list::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
 
-        .rate-positive {
-            color: #4CAF50;
-            font-weight: 500;
-        }
+.record-table .standard-rate-col {
+    width: 15%;
+    text-align: right;
+}
 
-        .rate-negative {
-            color: #f44336;
-            font-weight: 500;
-        }
+.rate-positive {
+    color: #4CAF50;
+    font-weight: 500;
+}
 
-        .rate-neutral {
-            color: #666;
-        }
+.rate-negative {
+    color: #f44336;
+    font-weight: 500;
+}
 
-        .rate-better {
-            color: #4CAF50;
-            font-weight: 600;
-        }
+.rate-neutral {
+    color: #666;
+}
 
-        .rate-worse {
-            color: #f44336;
-            font-weight: 600;
-        }
+.rate-better {
+    color: #4CAF50;
+    font-weight: 600;
+}
 
-        .rate-same {
-            color: #666;
-            font-weight: 500;
-        }
+.rate-worse {
+    color: #f44336;
+    font-weight: 600;
+}
 
-        .no-data {
-            text-align: center;
-            padding: 20px;
-            color: #999;
-            font-style: italic;
-        }
+.rate-same {
+    color: #666;
+    font-weight: 500;
+}
 
-        .time-diff {
-            font-size: 12px;
-            color: #999;
-            display: block;
-            margin-top: 2px;
-        }
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+    font-style: italic;
+}
 
-        .comparison-indicator {
-            font-size: 12px;
-            display: block;
-            margin-top: 2px;
-            font-weight: 500;
-        }
-    </style>
+.time-diff {
+    font-size: 12px;
+    color: #999;
+    display: block;
+    margin-top: 2px;
+}
+
+.comparison-indicator {
+    font-size: 12px;
+    display: block;
+    margin-top: 2px;
+    font-weight: 500;
+}
+</style>
