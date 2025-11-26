@@ -60,7 +60,7 @@
                         <th class="date-col">记录日期</th>
                         <th class="age-col">年龄</th>
                         <th class="height-col">身高 (cm)</th>
-                        <th class="height-rate-col">身高增长 (cm/月)</th>
+                        <th class="height-rate-col">增长速率(cm/月)</th>
                         <th class="standard-rate-col">标准P50速率 (cm/月)</th>
                         <th class="weight-col">体重 (kg)</th>
                         <th class="weight-rate-col">体重增长 (kg/月)</th>
@@ -307,8 +307,8 @@ export default {
             let html = '';
             listWithRates.forEach((item) => {
                 const age = formatAge({ years: item.year, months: item.month, days: item.day });
-                const height = item.height && item.height !== '' ? item.height + ' cm' : '--';
-                const weight = item.weight && item.weight !== '' ? item.weight + ' kg' : '--';
+                const height = item.height && item.height !== '' ? item.height : '--';
+                const weight = item.weight && item.weight !== '' ? item.weight : '--';
 
                 // 格式化速率
                 const heightRate = formatRate(item.heightRate, item.heightTimeDiff);
@@ -556,63 +556,133 @@ export default {
         }
 
         /* 记录列表样式 */
-        .record-list {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-        }
 
-        .record-list h3 {
-            margin-bottom: 15px;
-            color: #333;
-            text-align: center;
-        }
+    /* 记录列表样式 */
+    .record-list {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        overflow-x: auto; /* 添加水平滚动 */
+    }
 
-        .record-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
+    .record-list h3 {
+        margin-bottom: 15px;
+        color: #333;
+        text-align: center;
+    }
 
-        .record-table th {
-            background-color: #f8f8f8;
-            padding: 12px 8px;
-            text-align: left;
-            font-weight: 600;
-            border-bottom: 2px solid #eee;
-        }
+    .record-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        min-width: 800px; /* 设置最小宽度，确保表格不会被压缩 */
+        white-space: nowrap; /* 防止内容换行 */
+    }
 
-        .record-table td {
-            padding: 12px 8px;
-            border-bottom: 1px solid #eee;
-        }
+    .record-table th {
+        background-color: #f8f8f8;
+        padding: 12px 8px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #eee;
+        white-space: nowrap; /* 表头不换行 */
+    }
 
-        .record-table tbody tr:hover {
-            background-color: #f9f9f9;
-        }
+    .record-table td {
+        padding: 12px 8px;
+        border-bottom: 1px solid #eee;
+        white-space: nowrap; /* 单元格内容不换行 */
+    }
 
-        .record-table .date-col {
-            width: 12%;
-        }
+    .record-table tbody tr:hover {
+        background-color: #f9f9f9;
+    }
 
-        .record-table .age-col {
-            width: 15%;
-        }
+    /* 调整列宽，确保所有列都能正常显示 */
+    .record-table .date-col {
+        min-width: 100px;
+    }
 
-        .record-table .height-col,
-        .record-table .weight-col {
-            width: 12%;
-            text-align: right;
-        }
+    .record-table .age-col {
+        min-width: 80px;
+    }
 
-        .record-table .height-rate-col,
-        .record-table .weight-rate-col {
-            width: 15%;
-            text-align: right;
-        }
+    .record-table .height-col,
+    .record-table .weight-col {
+        min-width: 80px;
+        text-align: right;
+    }
 
+    .record-table .height-rate-col,
+    .record-table .weight-rate-col,
+    .record-table .standard-rate-col {
+        min-width: 120px;
+        text-align: right;
+    }
+
+    /* 确保时间差和比较指示器不换行 */
+    .time-diff,
+    .comparison-indicator {
+        white-space: nowrap;
+        display: inline-block;
+    }
+
+    .rate-positive {
+        color: #4CAF50;
+        font-weight: 500;
+    }
+
+    .rate-negative {
+        color: #f44336;
+        font-weight: 500;
+    }
+
+    .rate-neutral {
+        color: #666;
+    }
+
+    .rate-better {
+        color: #4CAF50;
+        font-weight: 600;
+    }
+
+    .rate-worse {
+        color: #f44336;
+        font-weight: 600;
+    }
+
+    .rate-same {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 20px;
+        color: #999;
+        font-style: italic;
+    }
+
+    /* 添加滚动条样式 */
+    .record-list::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .record-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .record-list::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 4px;
+    }
+
+    .record-list::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
         .record-table .standard-rate-col {
             width: 15%;
             text-align: right;
