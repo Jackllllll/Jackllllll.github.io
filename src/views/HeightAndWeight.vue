@@ -1,6 +1,6 @@
 
 <template>
-    <div class="container">
+   <div class="container">
         <div class="header">
             <h1>宝宝成长曲线</h1>
             <p>跟踪宝宝身高、体重发育情况</p>
@@ -60,7 +60,10 @@
                         <th class="date-col">记录日期</th>
                         <th class="age-col">年龄</th>
                         <th class="height-col">身高 (cm)</th>
+                        <th class="height-rate-col">身高增长 (cm/月)</th>
+                        <th class="standard-rate-col">标准P50速率 (cm/月)</th>
                         <th class="weight-col">体重 (kg)</th>
+                        <th class="weight-rate-col">体重增长 (kg/月)</th>
                     </tr>
                 </thead>
                 <tbody id="record-list-body">
@@ -75,6 +78,8 @@
             <p>• 可以通过鼠标滚轮或拖动图表区域进行缩放</p>
             <p>• 点击数据点可以查看详细数值</p>
             <p>• 点击"回到今天"按钮可快速定位到当前日期</p>
+            <p>• 记录列表显示每次测量的增长速率，并与标准P50速率进行比较</p>
+            <p>• <span style="color:#4CAF50; font-weight:600">绿色</span>表示比标准快，<span style="color:#f44336; font-weight:600">红色</span>表示比标准慢</p>
         </div>
     </div>
 
@@ -101,6 +106,167 @@ export default {
         window.userInfo = {
             bbbirthday: dayjs(usersData[currentUser].birthday).valueOf()
         };
+     // 计算标准P50身高速率
+        function calculateStandardHeightRate(ageYears, ageMonths) {
+            // 找到对应的年龄段
+            for (let i = 0; i < dataReference.length - 1; i++) {
+                const current = dataReference[i];
+                const next = dataReference[i + 1];
+
+                // 检查是否在当前年龄段内
+                if ((ageYears > current.year || (ageYears === current.year && ageMonths >= current.month)) &&
+                    (ageYears < next.year || (ageYears === next.year && ageMonths < next.month))) {
+
+                    // 计算时间跨度（月）
+                    const timeSpanMonths = parseFloat(current.day_number) / 30.44;
+
+                    if (timeSpanMonths > 0) {
+                        // 计算身高增长量
+                        const currentHeight = parseFloat(current.height[2]); // P50身高
+                        const nextHeight = parseFloat(next.height[2]); // 下一个年龄段的P50身高
+                        const heightDiff = nextHeight - currentHeight;
+
+                        // 计算月均增长率
+                        return heightDiff / timeSpanMonths;
+                    }
+                    break;
+                }
+            }
+            return null;
+        }
+
+        // 计算增长速率（优化版本，处理不连续数据）
+        function calculateGrowthRates(processedList) {
+            // 按日期从早到晚排序
+            const sortedList = [...processedList].sort((a, b) =>
+                new Date(a.record_date) - new Date(b.record_date)
+            );
+
+            // 为每条记录计算速率
+            for (let i = 0; i < sortedList.length; i++) {
+                const current = sortedList[i];
+
+                // 初始化速率数据
+                current.heightRate = null;
+                current.weightRate = null;
+                current.heightTimeDiff = null;
+                current.weightTimeDiff = null;
+                current.standardHeightRate = null;
+
+                // 计算标准P50身高速率
+                current.standardHeightRate = calculateStandardHeightRate(current.year, current.month);
+
+                // 查找最近的有效身高记录
+                let prevHeightIndex = i - 1;
+                while (prevHeightIndex >= 0) {
+                    const prevRecord = sortedList[prevHeightIndex];
+                    if (prevRecord.height && prevRecord.height !== '') {
+                        const currentDate = dayjs(current.record_date);
+                        const prevDate = dayjs(prevRecord.record_date);
+
+                        // 计算时间差（月）
+                        const timeDiffDays = currentDate.diff(prevDate, 'day');
+                        const timeDiffMonths = timeDiffDays / 30.44; // 平均每月天数
+
+                        if (timeDiffMonths > 0) {
+                            const heightDiff = parseFloat(current.height) - parseFloat(prevRecord.height);
+                            current.heightRate = heightDiff / timeDiffMonths;
+                            current.heightTimeDiff = timeDiffMonths;
+                        }
+                        break;
+                    }
+                    prevHeightIndex--;
+                }
+
+                // 查找最近的有效体重记录
+                let prevWeightIndex = i - 1;
+                while (prevWeightIndex >= 0) {
+                    const prevRecord = sortedList[prevWeightIndex];
+                    if (prevRecord.weight && prevRecord.weight !== '') {
+                        const currentDate = dayjs(current.record_date);
+                        const prevDate = dayjs(prevRecord.record_date);
+
+                        // 计算时间差（月）
+                        const timeDiffDays = currentDate.diff(prevDate, 'day');
+                        const timeDiffMonths = timeDiffDays / 30.44; // 平均每月天数
+
+                        if (timeDiffMonths > 0) {
+                            const weightDiff = parseFloat(current.weight) - parseFloat(prevRecord.weight);
+                            current.weightRate = weightDiff / timeDiffMonths;
+                            current.weightTimeDiff = timeDiffMonths;
+                        }
+                        break;
+                    }
+                    prevWeightIndex--;
+                }
+            }
+
+            return sortedList;
+        }
+
+        // 格式化速率显示
+        function formatRate(rate, timeDiff) {
+            if (rate === null || rate === undefined || isNaN(rate)) {
+                return '--';
+            }
+            // 保留两位小数，正数前加+号
+            const formatted = rate >= 0 ? `+${rate.toFixed(2)}` : rate.toFixed(2);
+
+            if (timeDiff && timeDiff > 0) {
+                const months = Math.floor(timeDiff);
+                const days = Math.round((timeDiff - months) * 30.44);
+                let timeText = '';
+                if (months > 0) {
+                    timeText += `${months}月`;
+                }
+                if (days > 0) {
+                    timeText += `${days}天`;
+                }
+                if (timeText) {
+                    return `${formatted}<span class="time-diff">${timeText}期间</span>`;
+                }
+            }
+            return formatted;
+        }
+
+        // 获取速率显示样式类名
+        function getRateClass(rate) {
+            if (rate === null || rate === undefined || isNaN(rate)) {
+                return 'rate-neutral';
+            }
+            return rate > 0 ? 'rate-positive' : rate < 0 ? 'rate-negative' : 'rate-neutral';
+        }
+
+        // 获取比较结果的样式类名
+        function getComparisonClass(actualRate, standardRate) {
+            if (actualRate === null || standardRate === null || isNaN(actualRate) || isNaN(standardRate)) {
+                return 'rate-neutral';
+            }
+
+            const diff = actualRate - standardRate;
+            if (diff > 0.1) return 'rate-better';    // 比标准快0.1以上
+            if (diff < -0.1) return 'rate-worse';     // 比标准慢0.1以上
+            return 'rate-same';                      // 与标准相近
+        }
+
+        // 格式化比较结果
+        function formatComparison(actualRate, standardRate) {
+            if (actualRate === null || standardRate === null || isNaN(actualRate) || isNaN(standardRate)) {
+                return '<span class="comparison-indicator">--</span>';
+            }
+
+            const diff = actualRate - standardRate;
+            let indicator = '';
+            if (diff > 0.1) {
+                indicator = `↑ 比标准快${Math.abs(diff).toFixed(2)}`;
+            } else if (diff < -0.1) {
+                indicator = `↓ 比标准慢${Math.abs(diff).toFixed(2)}`;
+            } else {
+                indicator = `≈ 与标准相近`;
+            }
+
+            return `<span class="comparison-indicator">${indicator}</span>`;
+        }
 
 
         // 颜色配置
@@ -119,35 +285,54 @@ export default {
                 list: processedList
             };
         }
-
         // 更新记录列表
         function updateRecordList() {
             const listBody = document.getElementById('record-list-body');
             const userData = usersData[currentUser];
             const processedList = processUserData(userData.data,true);
 
+            // 计算增长速率
+            const listWithRates = calculateGrowthRates(processedList);
+
             // 按记录日期排序（从新到旧）
-            processedList.sort((a, b) => {
+            listWithRates.sort((a, b) => {
                 return new Date(b.record_date) - new Date(a.record_date);
             });
 
-            if (processedList.length === 0) {
-                listBody.innerHTML = '<tr><td colspan="4" class="no-data">暂无记录数据</td></tr>';
+            if (listWithRates.length === 0) {
+                listBody.innerHTML = '<tr><td colspan="7" class="no-data">暂无记录数据</td></tr>';
                 return;
             }
 
             let html = '';
-            processedList.forEach(item => {
+            listWithRates.forEach((item) => {
                 const age = formatAge({ years: item.year, months: item.month, days: item.day });
-                const height = item.height && item.height !== '' ? item.height : '--';
-                const weight = item.weight && item.weight !== '' ? item.weight : '--';
+                const height = item.height && item.height !== '' ? item.height + ' cm' : '--';
+                const weight = item.weight && item.weight !== '' ? item.weight + ' kg' : '--';
+
+                // 格式化速率
+                const heightRate = formatRate(item.heightRate, item.heightTimeDiff);
+                const weightRate = formatRate(item.weightRate, item.weightTimeDiff);
+                const standardRate = item.standardHeightRate !== null ? item.standardHeightRate.toFixed(2) + ' cm/月' : '--';
+
+                // 获取速率样式类
+                const heightRateClass = getRateClass(item.heightRate);
+                const weightRateClass = getRateClass(item.weightRate);
+                const comparisonClass = getComparisonClass(item.heightRate, item.standardHeightRate);
+                const comparisonText = formatComparison(item.heightRate, item.standardHeightRate);
 
                 html += `
                     <tr>
                         <td>${item.record_date}</td>
                         <td>${age}</td>
                         <td>${height}</td>
+                        <td class="${heightRateClass}">${heightRate}</td>
+                        <td class="${comparisonClass}">
+                            ${standardRate}
+                            ${comparisonText}
+                        </td>
                         <td>${weight}</td>
+                        <td class="${weightRateClass}">${weightRate}</td>
                     </tr>
                 `;
             });
@@ -172,6 +357,9 @@ export default {
                 chartInstance.resize();
             });
         }
+
+
+
         function init() {
             // 初始化图表
             initChart();
@@ -237,9 +425,9 @@ export default {
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0;
+            padding: 20px;
         }
 
         .header {
@@ -385,18 +573,19 @@ export default {
         .record-table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 14px;
         }
 
         .record-table th {
             background-color: #f8f8f8;
-            padding: 12px 15px;
+            padding: 12px 8px;
             text-align: left;
             font-weight: 600;
             border-bottom: 2px solid #eee;
         }
 
         .record-table td {
-            padding: 12px 15px;
+            padding: 12px 8px;
             border-bottom: 1px solid #eee;
         }
 
@@ -405,17 +594,57 @@ export default {
         }
 
         .record-table .date-col {
-            width: 20%;
+            width: 12%;
         }
 
         .record-table .age-col {
-            width: 30%;
+            width: 15%;
         }
 
         .record-table .height-col,
         .record-table .weight-col {
-            width: 25%;
+            width: 12%;
             text-align: right;
+        }
+
+        .record-table .height-rate-col,
+        .record-table .weight-rate-col {
+            width: 15%;
+            text-align: right;
+        }
+
+        .record-table .standard-rate-col {
+            width: 15%;
+            text-align: right;
+        }
+
+        .rate-positive {
+            color: #4CAF50;
+            font-weight: 500;
+        }
+
+        .rate-negative {
+            color: #f44336;
+            font-weight: 500;
+        }
+
+        .rate-neutral {
+            color: #666;
+        }
+
+        .rate-better {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .rate-worse {
+            color: #f44336;
+            font-weight: 600;
+        }
+
+        .rate-same {
+            color: #666;
+            font-weight: 500;
         }
 
         .no-data {
@@ -423,5 +652,19 @@ export default {
             padding: 20px;
             color: #999;
             font-style: italic;
+        }
+
+        .time-diff {
+            font-size: 12px;
+            color: #999;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .comparison-indicator {
+            font-size: 12px;
+            display: block;
+            margin-top: 2px;
+            font-weight: 500;
         }
     </style>
