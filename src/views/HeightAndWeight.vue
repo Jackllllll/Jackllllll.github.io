@@ -139,8 +139,8 @@ export default {
             let html = '';
             processedList.forEach(item => {
                 const age = formatAge({ years: item.year, months: item.month, days: item.day });
-                const height = item.height && item.height !== '' ? item.height + ' cm' : '--';
-                const weight = item.weight && item.weight !== '' ? item.weight + ' kg' : '--';
+                const height = item.height && item.height !== '' ? item.height : '--';
+                const weight = item.weight && item.weight !== '' ? item.weight : '--';
 
                 html += `
                     <tr>
@@ -239,7 +239,7 @@ export default {
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0;
         }
 
         .header {
