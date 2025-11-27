@@ -59,7 +59,9 @@
                         <th class="date-col">记录日期</th>
                         <th class="age-col">年龄</th>
                         <th class="height-col">身高 (cm)</th>
-                        <th class="height-rate-col">增长速率(cm/月)</th>
+                        <th class="standard-height-col">标准P50身高 (cm)</th> <!-- 新增列 -->
+                        <th class="height-diff-col">与标准差值 (cm)</th> <!-- 新增列 -->
+                        <th class="height-rate-col">身高增长 (cm/月)</th>
                         <th class="standard-rate-col">标准P50速率 (cm/月)</th>
                         <th class="weight-col">体重 (kg)</th>
                         <th class="weight-rate-col">体重增长 (kg/月)</th>
@@ -78,9 +80,10 @@
             <p>• 点击数据点可以查看详细数值</p>
             <p>• 点击"回到今天"按钮可快速定位到当前日期</p>
             <p>• 记录列表显示每次测量的增长速率，并与标准P50速率进行比较</p>
-            <p>• <span style="color:#4CAF50; font-weight:600">绿色</span>表示比标准快，<span
+            <p>• 新增列显示当前年龄的标准P50身高和与标准身高的差值</p>
+            <p>• <span style="color:#4CAF50; font-weight:600">绿色</span>表示比标准快/高，<span
                     style="color:#f44336; font-weight:600"
-                >红色</span>表示比标准慢</p>
+                >红色</span>表示比标准慢/低</p>
         </div>
     </div>
 
@@ -135,6 +138,63 @@ export default {
             }
             return null;
         }
+        // 新增函数：根据精确年龄计算标准P50身高
+        function calculateStandardHeight(ageYears, ageMonths, ageDays) {
+            // 将年龄转换为总天数
+            const totalDays = ageYears * 365 + ageMonths * 30.44 + ageDays;
+
+            // 找到当前年龄所在的标准数据区间
+            let prevIndex = -1;
+            let nextIndex = -1;
+
+            // 计算每个标准点的累计天数
+            let cumulativeDays = 0;
+            const standardPoints = [];
+
+            for (let i = 0; i < dataReference.length; i++) {
+                const point = dataReference[i];
+                standardPoints.push({
+                    index: i,
+                    cumulativeDays: cumulativeDays,
+                    height: parseFloat(point.height[2]) // P50身高
+                });
+
+                // 累加当前年龄段的天数
+                cumulativeDays += parseFloat(point.day_number);
+            }
+
+            // 找到当前年龄所在区间
+            for (let i = 0; i < standardPoints.length - 1; i++) {
+                if (totalDays >= standardPoints[i].cumulativeDays && totalDays < standardPoints[i + 1].cumulativeDays) {
+                    prevIndex = i;
+                    nextIndex = i + 1;
+                    break;
+                }
+            }
+
+            // 如果年龄超出范围，使用最后一个点
+            if (prevIndex === -1) {
+                if (totalDays < standardPoints[0].cumulativeDays) {
+                    // 年龄小于第一个点，使用第一个点
+                    return standardPoints[0].height;
+                } else {
+                    // 年龄大于最后一个点，使用最后一个点
+                    return standardPoints[standardPoints.length - 1].height;
+                }
+            }
+
+            // 线性插值计算标准身高
+            const prevPoint = standardPoints[prevIndex];
+            const nextPoint = standardPoints[nextIndex];
+
+            const intervalDays = nextPoint.cumulativeDays - prevPoint.cumulativeDays;
+            const positionInInterval = totalDays - prevPoint.cumulativeDays;
+            const ratio = positionInInterval / intervalDays;
+
+            const standardHeight = prevPoint.height + (nextPoint.height - prevPoint.height) * ratio;
+
+            return standardHeight;
+        }
 
         // 计算增长速率（优化版本，处理不连续数据）
         function calculateGrowthRates(processedList) {
@@ -156,6 +216,14 @@ export default {
                 current.heightDiff = null; // 新增：身高差值
                 current.prevHeightDate = null; // 新增：上一次身高记录日期
 
+                // 新增：计算标准P50身高和差值
+                current.standardHeight = calculateStandardHeight(current.year, current.month, current.day);
+                if (current.standardHeight !== null && current.height && current.height !== '') {
+                    current.heightDifference = parseFloat(current.height) - current.standardHeight;
+                } else {
+                    current.heightDifference = null;
+                }
+
                 // 计算标准P50身高速率
                 current.standardHeightRate = calculateStandardHeightRate(current.year, current.month);
 
@@ -169,7 +237,7 @@ export default {
 
                         // 计算时间差（月）
                         const timeDiffDays = currentDate.diff(prevDate, 'day');
-                        const timeDiffMonths = timeDiffDays / 30.44; // 平均每月天数
+                        const timeDiffMonths = timeDiffDays / 30.44;
 
                         if (timeDiffMonths > 0) {
                             const heightDiff = parseFloat(current.height) - parseFloat(prevRecord.height);
@@ -193,7 +261,7 @@ export default {
 
                         // 计算时间差（月）
                         const timeDiffDays = currentDate.diff(prevDate, 'day');
-                        const timeDiffMonths = timeDiffDays / 30.44; // 平均每月天数
+                        const timeDiffMonths = timeDiffDays / 30.44;
 
                         if (timeDiffMonths > 0) {
                             const weightDiff = parseFloat(current.weight) - parseFloat(prevRecord.weight);
@@ -208,6 +276,8 @@ export default {
 
             return sortedList;
         }
+
+
         // 格式化身高显示，包含差值信息
         function formatHeightWithDiff(item) {
             if (!item.height || item.height === '') {
@@ -218,18 +288,15 @@ export default {
 
             // 如果有身高差值，则添加差值信息
             if (item.heightDiff !== null && item.prevHeightDate) {
-                const diffClass = item.heightDiff >= 0 ? 'positive' : 'negative';
+                const diffClass = item.heightDiff >= 0 ? 'height-diff-positive' : 'height-diff-negative';
                 const diffSign = item.heightDiff >= 0 ? '+' : '';
                 const diffText = `${diffSign}${item.heightDiff.toFixed(1)}`;
 
-
-
-                heightText += ` <span class="height-diff ${diffClass}">(${diffText}）</span>`;
+                heightText += ` <span class="${diffClass}">(${diffText}）</span>`;
             }
 
             return heightText;
         }
-
 
         // 格式化速率显示
         function formatRate(rate, timeDiff) {
@@ -312,6 +379,20 @@ export default {
                 list: processedList
             };
         }
+        // 格式化差值显示
+        function formatDifference(diff) {
+            if (diff === null || diff === undefined || isNaN(diff)) {
+                return '--';
+            }
+            return diff > 0 ? `+${diff.toFixed(1)}` : diff.toFixed(1);
+        }
+        // 获取差值显示样式类名
+        function getDiffClass(diff) {
+            if (diff === null || diff === undefined || isNaN(diff)) {
+                return 'height-diff-neutral';
+            }
+            return diff > 0 ? 'height-diff-positive' : diff < 0 ? 'height-diff-negative' : 'height-diff-neutral';
+        }
         // 更新记录列表
         function updateRecordList() {
             const listBody = document.getElementById('record-list-body');
@@ -327,20 +408,25 @@ export default {
             });
 
             if (listWithRates.length === 0) {
-                listBody.innerHTML = '<tr><td colspan="7" class="no-data">暂无记录数据</td></tr>';
+                listBody.innerHTML = '<tr><td colspan="9" class="no-data">暂无记录数据</td></tr>';
                 return;
             }
 
             let html = '';
             listWithRates.forEach((item) => {
                 const age = formatAge({ years: item.year, months: item.month, days: item.day });
-                const height = formatHeightWithDiff(item); // 使用新的格式化函数
+                const height = formatHeightWithDiff(item);
                 const weight = item.weight && item.weight !== '' ? item.weight + ' kg' : '--';
 
                 // 格式化速率
                 const heightRate = formatRate(item.heightRate, item.heightTimeDiff);
                 const weightRate = formatRate(item.weightRate, item.weightTimeDiff);
                 const standardRate = item.standardHeightRate !== null ? item.standardHeightRate.toFixed(2) + ' cm/月' : '--';
+
+                // 新增：格式化标准身高和差值
+                const standardHeight = item.standardHeight !== null ? item.standardHeight.toFixed(1) + '' : '--';
+                const heightDifference = formatDifference(item.heightDifference);
+                const diffClass = getDiffClass(item.heightDifference);
 
                 // 获取速率样式类
                 const heightRateClass = getRateClass(item.heightRate);
@@ -353,6 +439,8 @@ export default {
                         <td>${item.record_date}</td>
                         <td>${age}</td>
                         <td>${height}</td>
+                        <td class="standard-height-col">${standardHeight}</td>
+                        <td class="height-diff-col ${diffClass}">${heightDifference}</td>
                         <td class="${heightRateClass}">${heightRate}</td>
                         <td class="${comparisonClass}">
                             ${standardRate}
@@ -366,6 +454,7 @@ export default {
 
             listBody.innerHTML = html;
         }
+
 
         function initChart(typeId = '1') {
             const chartDom = document.getElementById('chart');
@@ -728,6 +817,36 @@ body {
 
 .rate-negative {
     color: #f44336;
+    font-weight: 500;
+}
+
+.height-diff-positive {
+    color: #4CAF50;
+    font-weight: 600;
+}
+
+.height-diff-negative {
+    color: #f44336;
+    font-weight: 600;
+}
+
+.height-diff-neutral {
+    color: #666;
+    font-weight: 500;
+}
+
+.height-diff-positive {
+    color: #4CAF50;
+    font-weight: 600;
+}
+
+.height-diff-negative {
+    color: #f44336;
+    font-weight: 600;
+}
+
+.height-diff-neutral {
+    color: #666;
     font-weight: 500;
 }
 
