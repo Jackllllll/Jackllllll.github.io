@@ -36,7 +36,7 @@ export const usersData = {
         data: [
             { record_date: "2025-08-24", height: 100, weight: '' },
             { record_date: "2025-10-18", height: 102, weight: '' },
-            { record_date: "2025-11-29", height: 103, weight: '' },
+            // { record_date: "2025-11-29", height: 103, weight: '' },
         ]
     }
 };
