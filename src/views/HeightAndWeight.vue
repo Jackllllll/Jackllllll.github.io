@@ -90,11 +90,10 @@
 </template>
 
 <script>
-import GrowthChartHelper, { processUserData, formatAge } from '../common/GrowthChartHelper'
 import dayjs from 'dayjs';
-import { dataReference } from '../common/Data'
-import { usersData } from '../common/UserData'
 import * as echarts from 'echarts';
+import { dataReference } from '../common/Data';
+import GrowthChartHelper, { formatAge, processUserData } from '../common/GrowthChartHelper';
 
 
 export default {
@@ -102,9 +101,14 @@ export default {
     methods: {
     },
 
-    mounted() {
-
-
+  async mounted() {
+        const usersData = await fetch('https://jackllllll.github.io/src/common/UserData.js')
+            .then(res => res.text())
+            .then(text => {
+                // 移除 export 声明并解析为对象
+                const dataStr = text.replace(/export\s+const\s+\w+\s*=\s*/, '');
+                return new Function(`return ${dataStr}`)();
+            });
         // 当前用户信息
         let currentUser = 'chuichui';
         window.userInfo = {
