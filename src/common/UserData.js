@@ -14,6 +14,7 @@ export const usersData = {
             { record_date: "2025-11-08", height: 114 },
             { record_date: "2025-11-17", height: '', weight: 20.7 },
             { record_date: "2025-11-22", height: 114.8 },
+            { record_date: "2025-12-06", height: 115.5 },
         ]
     },
     yaya: {
