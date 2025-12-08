@@ -271,17 +271,17 @@ class GrowthChartHelper {
 
         // 根据数值判断区间并显示相应的上下边界值
         if (value < p3) {
-            return `3% 以下 (P3: ${p3.toFixed(1)})`;
+            return `3% 以下 <br>(P3: ${p3.toFixed(1)})`;
         } else if (value > p97) {
-            return `97% 以上 (P97: ${p97.toFixed(1)})`;
+            return `97% 以上 <br>(P97: ${p97.toFixed(1)})`;
         } else if (value <= p15) {
-            return `3%-15% 区间 (P3: ${p3.toFixed(1)}, P15: ${p15.toFixed(1)})`;
+            return `3%-15% 区间 <br>(P3: ${p3.toFixed(1)}, P15: ${p15.toFixed(1)})`;
         } else if (value <= p50) {
-            return `15%-50% 区间 (P15: ${p15.toFixed(1)}, P50: ${p50.toFixed(1)})`;
+            return `15%-50% 区间 <br>(P15: ${p15.toFixed(1)}, P50: ${p50.toFixed(1)})`;
         } else if (value <= p85) {
-            return `50%-85% 区间 (P50: ${p50.toFixed(1)}, P85: ${p85.toFixed(1)})`;
+            return `50%-85% 区间 <br>(P50: ${p50.toFixed(1)}, P85: ${p85.toFixed(1)})`;
         } else {
-            return `85%-97% 区间 (P85: ${p85.toFixed(1)}, P97: ${p97.toFixed(1)})`;
+            return `85%-97% 区间 <br>(P85: ${p85.toFixed(1)}, P97: ${p97.toFixed(1)})`;
         }
     }
 
