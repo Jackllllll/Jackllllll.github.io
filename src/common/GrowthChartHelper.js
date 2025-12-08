@@ -218,38 +218,70 @@ class GrowthChartHelper {
 
     // 确定数值所在的百分区间
     getPercentileRange(ageIndex, value) {
+        // 获取当前年龄索引的整数部分和小数部分
         const dataIndex = Math.floor(ageIndex);
-        const referenceData = this.chartData.dataReference[dataIndex];
-        if (!referenceData) return '';
+        const fraction = ageIndex - dataIndex;
 
-        const values = this.isWeight(this.typeId) ? referenceData.weight : referenceData.height;
+        // 确保索引在有效范围内
+        if (dataIndex < 0 || dataIndex >= this.chartData.dataReference.length - 1) {
+            return '';
+        }
 
-        // 确保values是数组且有数据
-        if (!Array.isArray(values) || values.length === 0) return '';
+        // 获取当前和下一个年龄段的参考数据
+        const currentRef = this.chartData.dataReference[dataIndex];
+        const nextRef = this.chartData.dataReference[dataIndex + 1];
 
-        // 转换为数值数组
-        const numValues = values.map(v => parseFloat(v));
+        if (!currentRef || !nextRef) return '';
 
-        // 从Data.js看，数值应该已经是从小到大排序的：P3, P15, P50, P85, P97
-        const p3 = numValues[0];
-        const p15 = numValues[1];
-        const p50 = numValues[2];
-        const p85 = numValues[3];
-        const p97 = numValues[4];
+        // 确定要使用的指标类型（身高或体重）
+        const indicator = this.isWeight(this.typeId) ? 'weight' : 'height';
 
-        // 根据数值判断区间
+        // 确保当前和下一个参考数据都有有效的指标值
+        if (!currentRef[indicator] || !nextRef[indicator] ||
+            currentRef[indicator].length === 0 || nextRef[indicator].length === 0) {
+            return '';
+        }
+
+        // 定义百分位索引（0:P3, 1:P15, 2:P50, 3:P85, 4:P97）
+        const percentiles = [0, 1, 2, 3, 4];
+
+        // 对每个百分位进行线性插值计算
+        const interpolatedValues = percentiles.map(index => {
+            const currentValue = parseFloat(currentRef[indicator][index]);
+            const nextValue = parseFloat(nextRef[indicator][index]);
+
+            // 如果两个值都有效，则进行线性插值
+            if (!isNaN(currentValue) && !isNaN(nextValue)) {
+                return currentValue + (nextValue - currentValue) * fraction;
+            } else if (!isNaN(currentValue)) {
+                return currentValue;
+            } else if (!isNaN(nextValue)) {
+                return nextValue;
+            } else {
+                return 0;
+            }
+        });
+
+        // 提取插值后的百分位数值
+        const p3 = interpolatedValues[0];
+        const p15 = interpolatedValues[1];
+        const p50 = interpolatedValues[2];
+        const p85 = interpolatedValues[3];
+        const p97 = interpolatedValues[4];
+
+        // 根据数值判断区间并显示相应的上下边界值
         if (value < p3) {
-            return '3% 以下';
+            return `3% 以下 (P3: ${p3.toFixed(1)})`;
         } else if (value > p97) {
-            return '97% 以上';
+            return `97% 以上 (P97: ${p97.toFixed(1)})`;
         } else if (value <= p15) {
-            return '3%-15% 区间';
+            return `3%-15% 区间 (P3: ${p3.toFixed(1)}, P15: ${p15.toFixed(1)})`;
         } else if (value <= p50) {
-            return '15%-50% 区间';
+            return `15%-50% 区间 (P15: ${p15.toFixed(1)}, P50: ${p50.toFixed(1)})`;
         } else if (value <= p85) {
-            return '50%-85% 区间';
+            return `50%-85% 区间 (P50: ${p50.toFixed(1)}, P85: ${p85.toFixed(1)})`;
         } else {
-            return '85%-97% 区间';
+            return `85%-97% 区间 (P85: ${p85.toFixed(1)}, P97: ${p97.toFixed(1)})`;
         }
     }
 
