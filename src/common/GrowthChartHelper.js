@@ -216,7 +216,54 @@ class GrowthChartHelper {
         this.dispatch();
     }
 
+    // 确定数值所在的百分区间
+    getPercentileRange(ageIndex, value) {
+        const dataIndex = Math.floor(ageIndex);
+        const referenceData = this.chartData.dataReference[dataIndex];
+        if (!referenceData) return '';
+
+        const values = this.isWeight(this.typeId) ? referenceData.weight : referenceData.height;
+
+        // 确保values是数组且有数据
+        if (!Array.isArray(values) || values.length === 0) return '';
+
+        // 转换为数值数组
+        const numValues = values.map(v => parseFloat(v));
+
+        // 从Data.js看，数值应该已经是从小到大排序的：P3, P15, P50, P85, P97
+        const p3 = numValues[0];
+        const p15 = numValues[1];
+        const p50 = numValues[2];
+        const p85 = numValues[3];
+        const p97 = numValues[4];
+
+        // 根据数值判断区间
+        if (value < p3) {
+            return '3% 以下';
+        } else if (value > p97) {
+            return '97% 以上';
+        } else if (value <= p15) {
+            return '3%-15% 区间';
+        } else if (value <= p50) {
+            return '15%-50% 区间';
+        } else if (value <= p85) {
+            return '50%-85% 区间';
+        } else {
+            return '85%-97% 区间';
+        }
+    }
+
+    // 获取当前年龄阶段描述
+    getAgeStage(ageIndex) {
+        const dataIndex = Math.floor(ageIndex);
+        const referenceData = this.chartData.dataReference[dataIndex];
+        if (!referenceData) return '';
+
+        return referenceData.lable;
+    }
+
     setTooltip() {
+        const this_ = this;
         const option = {
             tooltip: {
                 trigger: 'item',
@@ -234,8 +281,16 @@ class GrowthChartHelper {
                     shadowOffsetX: 0,
                     shadowOffsetY: 0
                 },
-                formatter: params => {
-                    return this.isWeight(this.typeId) ? `${params?.value?.[1]}kg` : `${params?.value?.[1]}cm`;
+                formatter: function(params) {
+                    const value = params?.value?.[1];
+                    if (!value) return '';
+
+                    const ageIndex = params.value[0];
+                    const unit = this_.isWeight(this_.typeId) ? 'kg' : 'cm';
+                    const percentileRange = this_.getPercentileRange(ageIndex, value);
+                    const type = this_.isWeight(this_.typeId) ? '体重' : '身高';
+
+                    return `${value}${unit}<br/>${type}在 ${percentileRange}`;
                 },
                 padding: 8,
                 borderWidth: 0
