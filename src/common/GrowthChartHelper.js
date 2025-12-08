@@ -288,9 +288,8 @@ class GrowthChartHelper {
                     const ageIndex = params.value[0];
                     const unit = this_.isWeight(this_.typeId) ? 'kg' : 'cm';
                     const percentileRange = this_.getPercentileRange(ageIndex, value);
-                    const type = this_.isWeight(this_.typeId) ? '体重' : '身高';
 
-                    return `${value}${unit}<br/>${type}在 ${percentileRange}`;
+                    return `${value}${unit}<br/>在 ${percentileRange}`;
                 },
                 padding: 8,
                 borderWidth: 0
