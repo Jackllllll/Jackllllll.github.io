@@ -50,21 +50,12 @@ export default {
                 {
                     name: "工作项目及作品",
                     toJumpClassName: ".ProjectsAndWorks",
-                },
-                {
-                    name: "娃身高与体重",
-                    toJumpClassName: ".HeightAndWeight",
-                },
+                }
             ],
         };
     },
     methods: {
         jump(toJumpClassName) {
-            if (toJumpClassName === '.HeightAndWeight') {
-                this.$router.push({
-                    name: 'HeightAndWeight',
-                })
-            }
             document.querySelector(toJumpClassName).scrollIntoView({
                 behavior: "smooth", // 平滑过渡
                 block: "start", // 上边框与视窗顶部平齐。默认值
