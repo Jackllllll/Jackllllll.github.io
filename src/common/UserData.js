@@ -17,6 +17,7 @@ export const usersData = {
             { record_date: "2025-12-06", height: 115.5 },
             { record_date: "2025-12-14", weight: 19.7 },
             { record_date: "2025-12-21", height: 113 },
+            { record_date: "2025-12-27", height: 114.8 },
 
         ]
     },
@@ -34,6 +35,7 @@ export const usersData = {
             { record_date: "2025-11-22", height: 92, weight: '' },
             { record_date: "2025-12-14", weight: 14.4 },
             { record_date: "2025-12-21", height: 90.2 },
+            { record_date: "2025-12-27", height: 91.8 },
 
         ]
     },
