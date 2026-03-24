@@ -41,6 +41,7 @@ export const usersData = {
             { record_date: "2026-01-28", height: 92.3 },
             { record_date: "2026-02-25", weight: 14.1 },
             { record_date: "2026-03-05", height: 93.2 },
+            { record_date: "2026-03-24", height: 93.8 },
         ]
     },
     linlin: {
