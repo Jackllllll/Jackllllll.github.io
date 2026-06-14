@@ -1,4 +1,4 @@
-export const usersData = {
+4export const usersData = {
     chuichui: {
         name: "锤锤",
         birthday: "2019-08-07",
@@ -24,6 +24,7 @@ export const usersData = {
             { record_date: "2026-05-06", weight: 21.1 },
             { record_date: "2026-06-01", height: 116.3 },
             { record_date: "2026-06-08", height: 116.5 },
+            { record_date: "2026-06-14", height: 116.8 },
         ]
     },
     yaya: {
