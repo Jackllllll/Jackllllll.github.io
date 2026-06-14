@@ -1,4 +1,4 @@
-4export const usersData = {
+export const usersData = {
     chuichui: {
         name: "锤锤",
         birthday: "2019-08-07",
