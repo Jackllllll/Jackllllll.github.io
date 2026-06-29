@@ -25,6 +25,7 @@ export const usersData = {
             { record_date: "2026-06-01", height: 116.3 },
             { record_date: "2026-06-08", height: 116.5 },
             { record_date: "2026-06-14", height: 116.8 },
+            { record_date: "2026-06-29", height: 117.0 },
         ]
     },
     yaya: {
@@ -48,6 +49,7 @@ export const usersData = {
             { record_date: "2026-03-24", height: 93.8 },
             { record_date: "2026-05-06", weight: 13.5 },
             { record_date: "2026-06-01", height: 94.2 },
+            { record_date: "2026-06-29", height: 94.9 },
         ]
     },
     linlin: {
