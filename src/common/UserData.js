@@ -30,6 +30,7 @@ export const usersData = {
             { record_date: "2026-07-21", height: 117.5 },
             { record_date: "2026-07-29", height: 117.6 },
             { record_date: "2026-08-06", height: 117.9 },
+            { record_date: "2026-08-28", height: 118.1 },
         ]
     },
     yaya: {
